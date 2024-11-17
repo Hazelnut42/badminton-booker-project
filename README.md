@@ -1,3 +1,5 @@
+
+
 ## 项目设置
 
 ### 前置要求
@@ -22,8 +24,8 @@ cd backend
 npm install
 
 # 创建 .env 文件
-# 复制 .env.example 到 .env 并更新你的 MongoDB 连接字符串
-cp ../.env.example .env
+# 将 .env.example 重命名为 .env 并更新你的 MongoDB 连接字符串
+mv ../.env.example .env  # 或手动重命名
 ```
 
 3. **前端设置**
@@ -41,6 +43,8 @@ npm install
 - 创建数据库用户
 - 获取 MongoDB Atlas 连接字符串
 - 用你的连接字符串更新 .env 文件
+
+⚠️ 重要提示：必须将 `.env.example` 文件重命名为 `.env`，然后更新其中的数据库连接信息！
 
 .env 文件结构示例:
 ```
@@ -90,5 +94,5 @@ git push origin feature/你的功能名称
 
 ## 常见问题解决
 1. 如果遇到依赖安装问题，尝试删除 node_modules 文件夹后重新安装
-2. 确保 .env 文件中的数据库连接字符串格式正确
+2. 确保 .env 文件（不是 .env.example）存在且数据库连接字符串格式正确
 3. 确保 MongoDB Atlas 允许你的 IP 地址访问
