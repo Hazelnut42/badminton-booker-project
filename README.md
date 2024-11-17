@@ -51,7 +51,7 @@ cd backend
 npm install
 
 # 创建 .env 文件
-# 将 .env.example 重命名为 .env 并更新MongoDB 连接字符串（使用Hazel的密钥）
+# 将 .env.example 重命名为 .env 并更新MongoDB 连接字符串（使用Hazel的密钥，需要时请私聊联系！）
 mv ../.env.example .env  # 或手动重命名
 ```
 
