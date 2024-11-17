@@ -51,7 +51,7 @@ cd backend
 npm install
 
 # 创建 .env 文件
-# 将 .env.example 重命名为 .env 并更新你的 MongoDB 连接字符串
+# 将 .env.example 重命名为 .env 并更新MongoDB 连接字符串（使用Hazel的密钥）
 mv ../.env.example .env  # 或手动重命名
 ```
 
@@ -63,13 +63,6 @@ cd frontend
 # 安装依赖
 npm install
 ```
-
-4. **数据库设置**
-- 在 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 创建免费账号
-- 创建新的集群
-- 创建数据库用户
-- 获取 MongoDB Atlas 连接字符串
-- 用你的连接字符串更新 .env 文件
 
 ⚠️ 重要提示：必须将 `.env.example` 文件重命名为 `.env`，然后更新其中的数据库连接信息！
 
@@ -117,7 +110,7 @@ git push origin feature/你的功能名称
 - 更多功能开发中...
 
 ## 项目开发说明
-- 每个人使用自己的 MongoDB 数据库进行开发
+- 使用共享的 MongoDB 数据库进行开发
 - 提交代码前请先测试功能是否正常
 
 ## 常见问题解决
