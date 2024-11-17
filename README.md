@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# 羽毛球场地预订系统
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个用于管理羽毛球场地预订的网页应用。
 
-## Available Scripts
+## 项目设置
 
-In the project directory, you can run:
+### 前置要求
+- Node.js (v14 或更高版本)
+- npm 或 yarn
+- MongoDB Atlas 账号
 
-### `npm start`
+### 安装步骤
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **克隆项目**
+```bash
+git clone https://github.com/Hazelnut42/badminton-booker-project.git
+cd badminton-booker-project
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **后端设置**
+```bash
+# 进入后端目录
+cd backend
 
-### `npm test`
+# 安装依赖
+npm install
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 创建 .env 文件
+# 复制 .env.example 到 .env 并更新你的 MongoDB 连接字符串
+cp ../.env.example .env
+```
 
-### `npm run build`
+3. **前端设置**
+```bash
+# 进入前端目录
+cd frontend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 安装依赖
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **数据库设置**
+- 在 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) 创建免费账号
+- 创建新的集群
+- 创建数据库用户
+- 获取 MongoDB Atlas 连接字符串
+- 用你的连接字符串更新 .env 文件
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+.env 文件结构示例:
+```
+MONGO_URI=mongodb+srv://<用户名>:<密码>@cluster0.xxxxx.mongodb.net/<数据库名>
+```
 
-### `npm run eject`
+### 运行应用
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **启动后端服务器**
+```bash
+# 在 backend 目录下
+node server.js
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **启动前端开发服务器**
+```bash
+# 在 frontend 目录下
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+应用将在以下地址运行:
+- 前端: http://localhost:3000
+- 后端: http://localhost:5001
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 参与贡献
 
-## Learn More
+1. 为你的功能创建新分支
+```bash
+git checkout -b feature/你的功能名称
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. 提交你的修改
+```bash
+git add .
+git commit -m "修改描述"
+git push origin feature/你的功能名称
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. 在 GitHub 上创建 Pull Request
 
-### Code Splitting
+## 当前功能
+- 用户认证（注册/登录）
+- 更多功能开发中...
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 项目开发说明
+- 每个人使用自己的 MongoDB 数据库进行开发
+- 提交代码前请先测试功能是否正常
+- 遇到问题请及时在群里沟通
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 常见问题解决
+1. 如果遇到依赖安装问题，尝试删除 node_modules 文件夹后重新安装
+2. 确保 .env 文件中的数据库连接字符串格式正确
+3. 确保 MongoDB Atlas 允许你的 IP 地址访问
