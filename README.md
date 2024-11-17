@@ -1,4 +1,31 @@
 
+## 项目结构
+```
+badmintonbooker/
+├── backend/           # 后端代码
+│   ├── config/       # 配置文件目录
+│   │   └── db.js    # MongoDB 连接配置
+│   ├── models/      # 数据模型目录
+│   │   └── User.js  # 用户模型定义
+│   ├── routes/      # 路由目录
+│   │   └── authRoutes.js # 认证相关路由
+│   └── server.js    # 主服务器文件
+│
+├── frontend/          # 前端代码
+│   ├── node_modules/ # 依赖包
+│   ├── public/      # 静态资源
+│   ├── src/         # 源代码
+│   │   ├── components/ # React 组件
+│   │   ├── pages/   # 页面组件
+│   │   ├── styles/  # CSS 样式
+│   │   ├── App.js  
+│   │   └── index.js
+│   └── package.json # 项目依赖配置
+│
+├── .env.example      # 环境变量示例文件
+├── .gitignore       # Git 忽略文件
+└── README.md        # 项目说明文档
+```
 
 ## 项目设置
 
@@ -91,6 +118,7 @@ git push origin feature/你的功能名称
 
 ## 项目开发说明
 - 每个人使用自己的 MongoDB 数据库进行开发
+- 提交代码前请先测试功能是否正常
 
 ## 常见问题解决
 1. 如果遇到依赖安装问题，尝试删除 node_modules 文件夹后重新安装
