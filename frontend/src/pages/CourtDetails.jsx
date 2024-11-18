@@ -8,7 +8,7 @@ const CourtDetails = () => {
 
   useEffect(() => {
     // 获取指定球场详情
-    fetch(`http://localhost:5000/api/courts/${id}`)
+    fetch(`http://localhost:5001/api/courts/${id}`)
       .then((res) => res.json())
       .then((data) => setCourt(data));
   }, [id]);

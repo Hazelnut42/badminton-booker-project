@@ -7,7 +7,7 @@ const Homepage = () => {
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/courts')
+        fetch('http://localhost:5001/api/courts')
             .then(res => res.json())
             .then(data => setCourts(data));
     }, []);
