@@ -47,7 +47,10 @@
 .profile-info {
     display: flex;
     gap: 2rem;
-    align-items: center;
+}
+
+.avatar-container {
+    flex-shrink: 0;
 }
 
 .avatar-circle {
@@ -57,9 +60,65 @@
     background-color: #d1d5db;
 }
 
-.user-info h1 {
-    font-size: 2rem;
+.user-details {
+    flex: 1;
+    max-width: 600px;
+}
+
+.info-field {
+    margin-bottom: 1.5rem;
+}
+
+.info-field label {
+    display: block;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 0.5rem;
+}
+
+.info-field span:not(.field-hint) {
+    display: block;
+    font-size: 1rem;
+    color: white;
+}
+
+/* 更新的 static-field 样式 */
+.static-field {
+    display: block;
+    color: #e5e7eb;
+    font-size: 1rem;
+    padding: 0;
+    background: none;
+    border: none;
+    margin-bottom: 0.5rem;
+}
+
+.field-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.25rem;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.bio-input {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
 }
 
 .user-type {
@@ -68,12 +127,13 @@
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     font-size: 0.875rem;
-    margin-bottom: 1rem;
 }
 
 .user-bio {
+    white-space: pre-wrap;
+    line-height: 1.5;
     color: #e5e7eb;
-    max-width: 500px;
+    margin-top: 0.5rem;
 }
 
 .profile-actions {
@@ -85,11 +145,12 @@
 .logout-button,
 .save-button,
 .cancel-button {
-    padding: 0.5rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 6px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-size: 1rem;
 }
 
 .edit-button {
@@ -101,7 +162,7 @@
 .logout-button {
     background-color: transparent;
     color: white;
-    border: 1px solid white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .save-button {
@@ -113,22 +174,7 @@
 .cancel-button {
     background-color: transparent;
     color: white;
-    border: 1px solid white;
-}
-
-.edit-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    margin-bottom: 1rem;
-}
-
-.bio-input {
-    min-height: 80px;
-    resize: vertical;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .profile-content {
@@ -137,11 +183,16 @@
     padding: 0 2rem;
 }
 
+.profile-content h2 {
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
 .booking-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin: 1rem 0 2rem 0;
+    margin-bottom: 2rem;
 }
 
 .booking-item {
@@ -194,6 +245,16 @@
     cursor: pointer;
 }
 
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #6b7280;
+    font-size: 1.2rem;
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
     .profile-header {
         flex-direction: column;
@@ -202,7 +263,16 @@
 
     .profile-info {
         flex-direction: column;
+        align-items: center;
         text-align: center;
+    }
+
+    .user-details {
+        width: 100%;
+    }
+
+    .info-field {
+        text-align: left;
     }
 
     .profile-actions {
@@ -215,4 +285,31 @@
         gap: 1rem;
         text-align: center;
     }
+
+    .booking-date {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .nav-bar {
+        padding: 1rem;
+    }
+}
+
+/* 按钮悬停效果 */
+.edit-button:hover {
+    background-color: #1a1a1a;
+}
+
+.save-button:hover {
+    background-color: #0ea875;
+}
+
+.logout-button:hover,
+.cancel-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.cancel-reservation:hover {
+    background-color: #dc2626;
 }
