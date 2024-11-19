@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../styles/BookingPage.css';
 
 function BookingPage({ courtId, userId }) {
@@ -7,6 +8,7 @@ function BookingPage({ courtId, userId }) {
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [date, setDate] = useState('');
     const [hourlyRate, setHourlyRate] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchCourtDetails() {
@@ -30,27 +32,31 @@ function BookingPage({ courtId, userId }) {
         if (!selectedSlot) return alert('Please select a time slot');
         const cost = hourlyRate;
 
-        await axios.post('/api/bookings', {
-            userId,
-            courtId,
-            date,
-            timeSlot: selectedSlot,
-            cost,
-        });
+        try {
+            const response = await axios.post('/api/bookings', {
+                userId,
+                courtId,
+                date,
+                timeSlot: selectedSlot,
+                cost,
+            });
 
-        alert('Booking successful!');
-        navigate('/confirmation', { state: { booking: response.data.booking } });
+            alert('Booking successful!');
+            navigate('/confirmation', { state: { booking: response.data.booking } });
+        } catch (error) {
+            alert('Failed to book the slot');
+        }
     };
 
     return (
         <div>
             <h2>Book a Slot</h2>
             <label>Date: </label>
-            <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
             <div>
-                {slots.map(slot => (
+                {slots.map((slot) => (
                     <button
-                        key={slot}
+                        key={slot.time}
                         disabled={!slot.isAvailable}
                         onClick={() => setSelectedSlot(slot.time)}
                     >

@@ -4,7 +4,7 @@ import '../styles/ConfirmationPage.css';
 
 function ConfirmationPage({ booking }) {
     const location = useLocation();
-    const booking = location.state?.booking;
+    booking = booking || location.state?.booking;
 
     if (!booking) {
         return <div>No booking data available</div>;
