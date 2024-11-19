@@ -1,8 +1,6 @@
-require('dotenv').config({ path: '../.env' });
-console.log('MONGO_URI:', process.env.MONGO_URI);
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose'); // 直接引入 mongoose
 const authRoutes = require('./routes/authRoutes');
 const bookingsRoutes = require('./routes/bookRoutes');
 const courtsRoutes = require('./routes/courtsRoutes');
@@ -10,7 +8,22 @@ const courtsRoutes = require('./routes/courtsRoutes');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// 硬编码 MongoDB URI
+const MONGO_URI = 'mongodb+srv://Hazelchen:Hazelnut0607@cluster0.wht3u.mongodb.net/taskManagerDB?retryWrites=true&w=majority';
+
 // 连接数据库
+const connectDB = async () => {
+    try {
+        await mongoose.connect(MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('MongoDB connected successfully');
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error.message);
+        process.exit(1);
+    }
+};
 connectDB();
 
 app.use(cors());
