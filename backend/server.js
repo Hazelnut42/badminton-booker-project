@@ -3,7 +3,7 @@ console.log('MONGO_URI:', process.env.MONGO_URI);
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
-const bookingsRoutes = require('./routes/bookings');
+const bookingsRoutes = require('./routes/bookRoutes');
 const connectDB = require('./config/db');
 
 const app = express();
