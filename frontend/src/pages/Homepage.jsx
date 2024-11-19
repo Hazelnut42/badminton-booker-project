@@ -5,11 +5,26 @@ import '../styles/Homepage.css';
 const Homepage = () => {
     const [courts, setCourts] = useState([]);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true); // 添加加载状态
+    const [error, setError] = useState(null); // 添加错误状态
 
     useEffect(() => {
-        fetch('http://localhost:5001/api/courts')
-            .then(res => res.json())
-            .then(data => setCourts(data));
+        const fetchCourts = async () => {
+            try {
+                const res = await fetch('http://localhost:5001/api/courts');
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                const data = await res.json();
+                setCourts(data);
+            } catch (error) {
+                console.error("Error fetching courts:", error);
+                setError("Failed to load courts data.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourts();
     }, []);
 
     const filteredCourts = courts.filter(court =>
@@ -27,16 +42,22 @@ const Homepage = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </header>
-            <div className="courts-list">
-                {filteredCourts.map(court => (
-                    <div key={court.id} className="court-item">
-                        <img src={court.image} alt={court.name} />
-                        <h2>{court.name}</h2>
-                        <p>{court.address}</p>
-                        <Link to={`/court/${court.id}`}>View Details</Link>
-                    </div>
-                ))}
-            </div>
+            {loading ? (
+                <p>Loading courts...</p>
+            ) : error ? (
+                <p className="error">{error}</p>
+            ) : (
+                <div className="courts-list">
+                    {filteredCourts.map(court => (
+                        <div key={court._id} className="court-item">
+                            <img src={court.image} alt={court.name} />
+                            <h2>{court.name}</h2>
+                            <p>{court.address}</p>
+                            <Link to={`/court/${court._id}`}>View Details</Link>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
