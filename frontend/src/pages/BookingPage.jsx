@@ -39,6 +39,7 @@ function BookingPage({ courtId, userId }) {
         });
 
         alert('Booking successful!');
+        navigate('/confirmation', { state: { booking: response.data.booking } });
     };
 
     return (

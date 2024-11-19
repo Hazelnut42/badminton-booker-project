@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Homepage from './pages/Homepage';
 import CourtDetails from './pages/CourtDetails';
 import Profile from './pages/Profile';
+import BookingPage from './pages/BookingPage';
+import ConfirmationPage from './pages/ConfirmationPage';
 import Navbar from './components/Navbar';
 
 // 路由保护组件
@@ -26,19 +28,32 @@ function App() {
       <Routes>
         {/* 首页 */}
         <Route path="/home" element={<Homepage />} />
-        
+
         {/* 球场详情页 */}
         <Route path="/court/:id" element={<CourtDetails />} />
-        
+
         {/* 登录页 */}
         <Route
           path="/login"
           element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
         />
-        
+
         {/* 注册页 */}
         <Route path="/register" element={<Register />} />
-        
+
+        {/* 预订页面 */}
+        <Route
+          path="/booking/:courtId"
+          element={
+            <PrivateRoute>
+              <BookingPage userId={user ? user._id : null} />
+            </PrivateRoute>
+          }
+        />
+
+        {/* 确认页面 */}
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+
         {/* 受保护的用户资料页 */}
         <Route
           path="/profile"
@@ -48,7 +63,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        
+
         {/* 根路由重定向 */}
         <Route path="/" element={<Navigate to="/home" />} />
       </Routes>
