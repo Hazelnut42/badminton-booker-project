@@ -1,8 +1,9 @@
 require('dotenv').config({ path: '../.env' });
-console.log('MONGO_URI:', process.env.MONGO_URI); 
+console.log('MONGO_URI:', process.env.MONGO_URI);
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const bookingsRoutes = require('./routes/bookings');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/bookings', bookingsRoutes);
 
 // 模拟球场数据
 const courts = [
