@@ -7,21 +7,25 @@ const courtsRoutes = require('./routes/courtsRoutes');
 const bookingsRoutes = require('./routes/bookRoutes');
 const connectDB = require('./config/db'); // 数据库连接
 const seedDatabase = require('./seed'); // 引入种子数据脚本
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const app = express();
+const app = express(); // 初始化 app
 const PORT = process.env.PORT || 5001;
+
+// 提供静态图片路径
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // 连接数据库并初始化种子数据
 connectDB()
     .then(() => {
         console.log('MongoDB connected successfully');
+        // 初始化种子数据（如果需要）
+        // seedDatabase(); // 根据需要取消注释
     })
     .catch(error => console.error('Error connecting to MongoDB:', error.message));
+
 // 中间件
 app.use(cors());
 app.use(express.json());
-app.use('/images', express.static(path.join(__dirname, 'images'))); // 提供静态图片路径
 
 // 路由
 app.use('/api/auth', authRoutes);

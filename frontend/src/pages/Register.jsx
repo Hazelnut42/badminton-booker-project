@@ -65,18 +65,6 @@ const Register = () => {
 
   return (
     <div className="register-page">
-      <nav className="nav-bar">
-        <div className="logo">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            BadmintonBooker
-          </Link>
-        </div>
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/profile" className="nav-link">Account</Link>
-        </div>
-      </nav>
-      
       <div className="register-container">
         <div className="register-content">
           <div className="register-welcome">

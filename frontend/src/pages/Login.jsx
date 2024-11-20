@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/Login.css';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn, setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,6 +29,8 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        setIsLoggedIn(true);
+        setUser(data.user);
         navigate('/profile');
       } else {
         setError(data.message);
@@ -43,18 +45,6 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <nav className="nav-bar">
-        <div className="logo">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            BadmintonBooker
-          </Link>
-        </div>
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/profile" className="nav-link">Account</Link>
-        </div>
-      </nav>
-      
       <div className="login-container">
         <div className="login-content">
           <div className="login-welcome">

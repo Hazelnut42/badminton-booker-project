@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState('');
@@ -53,7 +53,6 @@ const Profile = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
-      console.log('Saving data:', editedData); // 调试日志
 
       if (!editedData.displayName.trim()) {
         setError('Display name cannot be empty');
@@ -78,8 +77,6 @@ const Profile = () => {
       }
 
       const updatedData = await response.json();
-      console.log('Server response:', updatedData); // 调试日志
-      
       setUserData(updatedData);
       setIsEditing(false);
       setError('');
@@ -111,18 +108,6 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      <nav className="nav-bar">
-        <div className="logo">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            BadmintonBooker
-          </Link>
-        </div>
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/profile" className="nav-link">Account</Link>
-        </div>
-      </nav>
-
       <div className="profile-hero">
         <div className="profile-header">
           <div className="profile-info">

@@ -1,21 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './Navbar.css';
 
-const Navbar = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
-
-  const handleAccountClick = () => {
-    if (isLoggedIn) {
-      navigate('/profile');
-    } else {
-      navigate('/login');
-    }
-  };
-
+const Navbar = () => {
   return (
-    <nav className="navbar">
-      <Link to="/home">Home</Link>
-      <button onClick={handleAccountClick}>Account</button>
+    <nav className="nav-bar">
+      <div className="logo">
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          BadmintonBooker
+        </Link>
+      </div>
+      <div className="nav-links">
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/profile" className="nav-link">Account</Link>
+      </div>
     </nav>
   );
 };
