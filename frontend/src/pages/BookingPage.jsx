@@ -5,8 +5,8 @@ import moment from 'moment';
 import { useNavigate, Link } from 'react-router-dom';
 
 function BookingPage() {
-    const { courtId } = useParams();  // courtId 会是 URL 中的动态参数
-    console.log(courtId);  // 打印 courtId，确保值正确
+    const { courtId } = useParams(); // courtId will be a dynamic parameter in the URL
+    console.log(courtId); // Log courtId to ensure it's correct
     const [slots, setSlots] = useState([]);
     const [date, setDate] = useState('');
     const [dates, setDates] = useState([]);
@@ -20,9 +20,9 @@ function BookingPage() {
         setUserId(id);
         const today = new Date();
         
-        const formattedDate = moment(today).format('YYYY-MM-DD'); // 格式化日期为 yyyy-mm-dd
-        setDate(formattedDate);  // 设置当前日期
-        // 计算未来六天的日期
+        const formattedDate = moment(today).format('YYYY-MM-DD');
+        setDate(formattedDate);
+
         const upcomingDates = [];
         for (let i = 0; i < 7; i++) {
             const futureDate = new Date(today);
@@ -44,7 +44,7 @@ function BookingPage() {
     }, [courtId]);
 
     const groupedSlots = slots.reduce((acc, slot) => {
-        const slotDate = slot.date; // 假设日期字段是 'date'
+        const slotDate = slot.date;
         if (!acc[slotDate]) {
             acc[slotDate] = [];
         }
@@ -53,7 +53,7 @@ function BookingPage() {
     }, {});
 
     const handleBooking = async () => {
-        if (!selectedSlot) return alert('Please select a time slot');  // 如果没有选择任何时间段，提示用户
+        if (!selectedSlot) return alert('Please select a time slot');  // Prompt the user if no time slot is selected
         if (!userId) return alert('User not logged in');
         const { date, time, isAvailable } = selectedSlot;
         if (!isAvailable) {
@@ -63,9 +63,9 @@ function BookingPage() {
         try {
             
             const response = await axios.post('http://localhost:5001/api/bookings/book', {
-                userId, // 替换为真实的用户ID
+                userId,
                 courtId,
-                date: selectedSlot.date,  // 传递日期字符串 "2024-11-19"
+                date: selectedSlot.date,
                 timeSlot: `${selectedSlot.time}:00-${selectedSlot.time + 1}:00`,
             });
 
@@ -90,15 +90,15 @@ function BookingPage() {
                 type="date" 
                 value={date} 
                 onChange={(e) => setDate(e.target.value)} 
-                disabled // 禁用日期选择器，确保不能修改
+                disabled
             />
 
-            {/* 使用表格展示每一天的时段 */}
+            {/* Display slots in a table */}
             <table className="slots-table">
                 <thead>
                     <tr>
                         <th>Date</th>
-                        {/* 每个小时之间显示时间段 */}
+                        {/* Show time slots for each hour */}
                         {[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((hour) => (
                             <th key={hour}>{`${hour}:00-${hour + 1}:00`}</th>
                         ))}
@@ -108,7 +108,7 @@ function BookingPage() {
                     {dates.map((day) => (
                         <tr key={day}>
                             <td>{day}</td>
-                            {/* 每个日期的时间段显示 */}
+                            {/* Display time slots for each date */}
                             {[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((hour) => {
                                 const slot = slots.find(slot => slot.date === day && slot.time === hour);
                                     return (
@@ -159,7 +159,7 @@ function BookingPage() {
             >
                 Book Now
             </button>
-            {/* 加载状态 */}
+            {/* loading */}
             {/* {isLoading && <p>Loading...</p>} */}
         </div>
     );

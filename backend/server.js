@@ -1,43 +1,43 @@
-require('dotenv').config({ path: '../.env' }); // 加载 .env 文件
+require('dotenv').config({ path: '../.env' }); // Load .env file
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const courtsRoutes = require('./routes/courtsRoutes');
 const bookingsRoutes = require('./routes/bookRoutes');
-const connectDB = require('./config/db'); // 数据库连接
-const seedDatabase = require('./seed'); // 引入种子数据脚本
+const connectDB = require('./config/db'); // Database connection
+const seedDatabase = require('./seed'); // Import seed data script
 
-const app = express(); // 初始化 app
+const app = express(); // Initialize app
 const PORT = process.env.PORT || 5001;
 
-// 提供静态图片路径
+// Serve static image files
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// 连接数据库并初始化种子数据
+// Connect to the database and initialize seed data
 connectDB()
     .then(() => {
         console.log('MongoDB connected successfully');
-        // 初始化种子数据（如果需要）
-        // seedDatabase(); // 根据需要取消注释
+        // Initialize seed data (uncomment if needed)
+        // seedDatabase(); // Uncomment as required
     })
     .catch(error => console.error('Error connecting to MongoDB:', error.message));
 
-// 中间件
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// 路由
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courts', courtsRoutes);
 app.use('/api/bookings', bookingsRoutes);
 
-// 根路由
+// Root route
 app.get('/', (req, res) => {
     res.send('Welcome to the server!');
 });
 
-// 启动服务器
+// Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

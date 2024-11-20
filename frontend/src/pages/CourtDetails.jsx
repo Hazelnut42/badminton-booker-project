@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CourtDetails.css';
 
 const CourtDetails = () => {
-  const { id } = useParams(); // 获取 URL 参数
-  const navigate = useNavigate(); // 用于页面跳转
+  const { id } = useParams(); // Get the court ID from the URL
+  const navigate = useNavigate(); // Get the navigate function from the router
   const [court, setCourt] = useState(null);
   const [error, setError] = useState(null);
 

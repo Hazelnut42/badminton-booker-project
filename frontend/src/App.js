@@ -9,7 +9,6 @@ import BookingPage from './pages/BookingPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 import Navbar from './components/Navbar';
 
-// 路由保护组件
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -26,29 +25,28 @@ function App() {
     <>
       <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
-        {/* 首页 */}
+        {/* Homepage */}
         <Route path="/home" element={<Homepage />} />
 
-        {/* 球场详情页 */}
+        {/* Court details page */}
         <Route path="/court/:id" element={<CourtDetails />} />
 
-        {/* 登录页 */}
+        {/* Login page */}
         <Route
           path="/login"
           element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
         />
 
-        {/* 注册页 */}
+        {/* Register page */}
         <Route path="/register" element={<Register />} />
 
-        {/* 预订页面 */}
+        {/* Booking page */}
         <Route path="/bookings/:courtId" element={<BookingPage />} />
 
-
-        {/* 确认页面 */}
+        {/* Confirmation page */}
         <Route path="/confirmation" element={<ConfirmationPage />} />
 
-        {/* 受保护的用户资料页 */}
+        {/* Protected profile page */}
         <Route
           path="/profile"
           element={
@@ -58,7 +56,7 @@ function App() {
           }
         />
 
-        {/* 根路由重定向 */}
+        {/* Redirect root route */}
         <Route path="/" element={<Navigate to="/home" />} />
       </Routes>
     </>

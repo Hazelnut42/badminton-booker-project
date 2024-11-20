@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '../../.env' });
 const mongoose = require('mongoose');
 
-let isConnected = false; // 防止重复连接
+let isConnected = false;
 
 const connectDB = async () => {
     if (isConnected) {

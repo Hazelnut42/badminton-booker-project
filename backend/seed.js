@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const Court = require('./models/courts'); // 确保路径正确
+const Court = require('./models/courts');
 const connectDB = require('./config/db');
 
-// 模拟球场数据
 const courtsData = [
     {
         name: "Stage 18 Badminton Centre",

@@ -4,18 +4,18 @@
 
 table.slots-table {
     width: 100%;
-    border-collapse: collapse; /* 去除单元格之间的间距 */
+    border-collapse: collapse;
     margin-top: 20px;
     text-align: center;
 }
 
 table.slots-table th, table.slots-table td {
-    border: 1px solid #ddd; /* 设置表格边框 */
+    border: 1px solid #ddd;
     padding: 10px;
 }
 
 table.slots-table th {
-    background-color: #f2f2f2; /* 设置表头背景色 */
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 

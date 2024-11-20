@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: true, 
     unique: true,
-    immutable: true  // 设置为不可变
+    immutable: true
   },
   displayName: {
     type: String,

@@ -5,8 +5,8 @@ import '../styles/Homepage.css';
 const Homepage = () => {
     const [courts, setCourts] = useState([]);
     const [search, setSearch] = useState("");
-    const [loading, setLoading] = useState(true); // 添加加载状态
-    const [error, setError] = useState(null); // 添加错误状态
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null); 
 
     useEffect(() => {
         const fetchCourts = async () => {
@@ -16,7 +16,7 @@ const Homepage = () => {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }
                 const data = await res.json();
-                console.log('Fetched courts:', data); // 打印所有球场数据
+                console.log('Fetched courts:', data); 
                 setCourts(data);
             } catch (error) {
                 console.error("Error fetching courts:", error);
@@ -50,7 +50,7 @@ const Homepage = () => {
             ) : (
                 <div className="courts-list">
                     {filteredCourts.map(court => {
-                        console.log(`Image path for ${court.name}:`, court.image); // 打印每张图片的路径
+                        console.log(`Image path for ${court.name}:`, court.image);
                         return (
                             <div key={court._id} className="court-item">
                                 <img src={`http://localhost:5001${court.image}`} alt={court.name} />

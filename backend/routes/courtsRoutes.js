@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-// 获取所有球场信息
+// Get all court information
 router.get('/', async (req, res) => {
     try {
-        const courts = await Court.find(); // 从数据库中获取球场列表
-        console.log('Courts fetched from DB:', courts); // 调试日志
+        const courts = await Court.find(); // Fetch the list of courts from the database
+        console.log('Courts fetched from DB:', courts); // Debug log
         res.json(courts);
     } catch (error) {
         console.error('Error fetching courts:', error.message);
@@ -16,11 +16,11 @@ router.get('/', async (req, res) => {
     }
 });
 
-// 根据 ID 获取球场详情
+// Get court details by ID
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
-    // 验证 ID 格式
+    // Validate ID format
     if (!mongoose.isValidObjectId(id)) {
         return res.status(400).json({ message: 'Invalid court ID' });
     }

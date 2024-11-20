@@ -4,42 +4,40 @@ const Booking = require('../models/booking');
 const Court = require('../models/courts');
 const moment = require('moment');
 
-// create booking
+// Create booking
 router.post('/book', async (req, res) => {
     const { userId, courtId, date, timeSlot } = req.body;
 
     try {
-        // 将 date 转换为 Date 对象
-        const parsedDate = moment(date).local().toDate();  // 例如 "2024-11-19"
+        // Convert date to a Date object
+        const parsedDate = moment(date).local().toDate(); // e.g., "2024-11-19"
 
-        // 解析 timeSlot，假设 timeSlot 是 "8:00-9:00"
-        const timeParts = timeSlot.split('-')[0].split(':');  // "8:00" -> ["8", "00"]
+        // Parse timeSlot, assuming timeSlot is "8:00-9:00"
+        const timeParts = timeSlot.split('-')[0].split(':'); // "8:00" -> ["8", "00"]
         const hours = parseInt(timeParts[0]);
         const minutes = parseInt(timeParts[1]);
 
-        // 创建完整的 timeSlot Date 对象，使用 date 的年月日，设置时和分
+        // Create a full Date object for timeSlot using the year, month, and day from date
         const timeSlotDate = new Date(parsedDate);
-        timeSlotDate.setHours(hours, minutes, 0, 0);  // 设置时、分为 8:00 AM
+        timeSlotDate.setHours(hours, minutes, 0, 0); // Set hours and minutes to 8:00 AM
 
-        // 创建新的预定对象
+        // Create a new booking object
         const newBooking = new Booking({
             userId,
             courtId,
-            date: new Date(),  // 存储日期
-            timeSlot: timeSlotDate // 存储完整时间
+            date: new Date(), // Store the current date
+            timeSlot: timeSlotDate // Store the full time slot
         });
 
-        await newBooking.save();  // 保存到数据库
+        await newBooking.save(); // Save to the database
         const court = await Court.findById(courtId);
         const bookingData = {
-            userId,          // 用户ID
-            courtId,         // 场地ID
-            date: date,  // 当前日期
-            timeSlot: timeSlot,  // 预定的时间
-            courtName: court.name,  // court 的名字
-            // courtCost: court.cost,  // court 的费用
-            courtLocation: court.address,  // court 的位置
-            // courtContact: court.contact  // court 的联系方式
+            userId,          // User ID
+            courtId,         // Court ID
+            date: date,      // Current date
+            timeSlot: timeSlot, // Booked time
+            courtName: court.name, // Court name
+            courtLocation: court.address, // Court location
         };
         res.status(201).json({ message: 'Booking successful', booking: bookingData });
     } catch (err) {
@@ -48,10 +46,7 @@ router.post('/book', async (req, res) => {
     }
 });
 
-
-
-
-// get booking history
+// Get booking history
 router.get('/history/:userId', async (req, res) => {
     try {
         const bookings = await Booking.find({ userId: req.params.userId }).populate('courtId');
@@ -61,7 +56,7 @@ router.get('/history/:userId', async (req, res) => {
     }
 });
 
-// cancel booking
+// Cancel booking
 router.delete('/:id', async (req, res) => {
     try {
         const booking = await Booking.findById(req.params.id);
@@ -79,50 +74,50 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-
+// Check court availability
 router.get('/availability', async (req, res) => {
-    const { courtId, date } = req.query;  // 获取请求中的 courtId 和 date 参数
+    const { courtId, date } = req.query; // Get courtId and date from request query
 
-    // 如果没有提供 date，则使用今天的日期
+    // If date is not provided, use today's date
     const targetDate = date ? moment(date).startOf('day') : moment().startOf('day');
 
-    // 计算未来六天的时间表
+    // Calculate availability for the next 6 days
     const availability = [];
     for (let i = 0; i < 7; i++) {
-        // 对每一天的时间段进行遍历
-        const currentDate = targetDate.clone().add(i, 'days');
+        const currentDate = targetDate.clone().add(i, 'days'); // Add i days to the target date
 
-        // 收集每天所有的时间段（8点到22点）
+        // Collect all time slots for each day (from 8:00 AM to 10:00 PM)
         const timeSlots = [];
         for (let hour = 8; hour < 22; hour++) {
             const timeSlot = currentDate.clone().set('hour', hour).set('minute', 0).toDate();
             timeSlots.push(timeSlot);
         }
 
-        // 查找该 courtId 在未来 7 天中的所有已确认的预定
+        // Find all confirmed bookings for the courtId within the next 7 days
         const bookedSlots = await Booking.find({
             courtId,
             timeSlot: { $in: timeSlots },
-            status: 'confirmed'  // 只查找已确认的预定
+            status: 'confirmed' // Filter for confirmed bookings only
         });
 
-        // 构建该日期的可用性
+        // Build availability for the current date
         timeSlots.forEach((slot) => {
-            const slotHour = slot.getHours();  // 获取小时部分
+            const slotHour = slot.getHours(); // Get the hour part
             const isBooked = bookedSlots.some((booking) => {
-                // 如果该预定的 timeSlot 和当前的 slot 匹配，则认为这个时段已被预定
+                // Mark the slot as booked if any booking matches the hour
                 return moment(booking.timeSlot).isSame(slot, 'hour');
             });
 
             availability.push({
                 date: currentDate.format('YYYY-MM-DD'),
                 time: slotHour,
-                isAvailable: !isBooked,  // 如果没有预定，则为可用
+                isAvailable: !isBooked, // Mark as available if not booked
             });
         });
     }
 
-    // 返回所有时段的可用性
+    // Return availability for all time slots
     res.json({ availableSlots: availability });
 });
+
 module.exports = router;
