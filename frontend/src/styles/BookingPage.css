@@ -1,74 +1,40 @@
-/* BookingPage */
 .booking-page-container {
     padding: 20px;
-    background-color: #f9f9f9;
-    font-family: Arial, sans-serif;
 }
 
-.booking-page-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.booking-page-container input[type="date"] {
-    padding: 8px;
-    margin: 10px 0;
+table.slots-table {
     width: 100%;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+    border-collapse: collapse; /* 去除单元格之间的间距 */
+    margin-top: 20px;
+    text-align: center;
 }
 
-.booking-page-container input[type="date"]:focus {
-    border-color: #007bff;
-    outline: none;
+table.slots-table th, table.slots-table td {
+    border: 1px solid #ddd; /* 设置表格边框 */
+    padding: 10px;
 }
 
-/* 可用时间段按钮 */
-.slots-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+table.slots-table th {
+    background-color: #f2f2f2; /* 设置表头背景色 */
+    font-weight: bold;
 }
 
-.slots-container button {
+button {
+    padding: 8px 12px;
     background-color: #007bff;
     color: white;
-    padding: 10px;
     border: none;
     border-radius: 5px;
-    font-size: 14px;
     cursor: pointer;
-    width: 100px;
-    height: 40px;
 }
 
-.slots-container button:hover {
-    background-color: #0056b3;
-}
-
-.slots-container button:disabled {
+button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+    opacity: 0.6;
 }
 
-/* "Book Now"  */
-.book-now-btn {
-    display: block;
-    background-color: #28a745;
-    color: white;
-    padding: 12px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    margin: 20px auto 0;
-    text-align: center;
-    cursor: pointer;
-    width: fit-content;
-}
-
-.book-now-btn:hover {
-    background-color: #218838;
+button:hover:not(:disabled) {
+    background-color: #0056b3;
+    opacity: 0.8;
 }

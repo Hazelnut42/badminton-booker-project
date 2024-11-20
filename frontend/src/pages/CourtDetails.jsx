@@ -47,7 +47,7 @@ const CourtDetails = () => {
       <img src={court.image} alt={court.name} />
       <p>{court.address}</p>
       <div id="map" style={{ width: '100%', height: '400px', margin: '20px 0' }}></div>
-      <button className="book-now" onClick={() => navigate(`/booking/${id}`)}>
+      <button className="book-now" onClick={() => navigate(`/bookings/${id}`)}>
         Book Now
       </button>
     </div>

@@ -25,15 +25,15 @@ const authenticateToken = (req, res, next) => {
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    
+
     // 检查用户是否已存在
-    const existingUser = await User.findOne({ 
-      $or: [{ username }, { email }] 
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }]
     });
-    
+
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'Username or email already exists' 
+      return res.status(400).json({
+        message: 'Username or email already exists'
       });
     }
 
@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
     });
 
     await user.save();
-    
+
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     console.error('Registration error:', error);
@@ -59,9 +59,9 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     const user = await User.findOne({ username });
-    
+
     if (!user || user.password !== password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -76,6 +76,7 @@ router.post('/login', async (req, res) => {
       message: 'Login successful',
       token,
       user: {
+        id: user._id.toString(),
         username: user.username,
         email: user.email,
         displayName: user.displayName
@@ -106,7 +107,7 @@ router.put('/profile/update', authenticateToken, async (req, res) => {
   try {
     const { displayName, bio } = req.body;
     console.log('Received update request:', req.body); // 调试日志
-    
+
     // 只验证 displayName
     if (!displayName || !displayName.trim()) {
       return res.status(400).json({ message: 'Display name is required' });
@@ -119,9 +120,9 @@ router.put('/profile/update', authenticateToken, async (req, res) => {
         displayName: displayName.trim(),
         bio: bio ? bio.trim() : ''
       },
-      { 
+      {
         new: true,
-        select: '-password' 
+        select: '-password'
       }
     );
 

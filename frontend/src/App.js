@@ -42,7 +42,8 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* 预订页面 */}
-        <Route path="/bookings/:courtId/:userId" element={<BookingPage />} />
+        <Route path="/bookings/:courtId" element={<BookingPage />} />
+
 
         {/* 确认页面 */}
         <Route path="/confirmation" element={<ConfirmationPage />} />

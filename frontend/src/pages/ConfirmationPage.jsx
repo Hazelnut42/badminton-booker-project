@@ -16,11 +16,11 @@ function ConfirmationPage({ booking }) {
             <p>Thank you for your reservation!</p>
             <p>Your booking has been confirmed.</p>
             <ul>
-                <li>Court Name: {booking.courtId.name}</li>
+                <li>Court Name: {booking.courtName}</li>
                 <li>Date & Time: {booking.date} at {booking.timeSlot}</li>
-                <li>Total Cost: ${booking.cost}</li>
-                <li>Location: {booking.courtId.location}</li>
-                <li>Contact: {booking.courtId.contact}</li>
+                {/* <li>Total Cost: ${booking.cost}</li> */}
+                <li>Location: {booking.courtLocation}</li>
+                {/* <li>Contact: {booking.courtId.contact}</li> */}
             </ul>
             <button onClick={() => window.location.href = '/'}>Return to Home</button>
         </div>
