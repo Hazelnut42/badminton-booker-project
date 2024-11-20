@@ -1,23 +1,17 @@
-/* General styles for the booking page */
-body {
+/* BookingPage */
+.booking-page-container {
+    padding: 20px;
+    background-color: #f9f9f9;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
 }
 
-h2 {
+.booking-page-container h2 {
     text-align: center;
     color: #333;
-    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-div {
-    padding: 20px;
-}
-
-/* Form input styling */
-input[type="date"] {
+.booking-page-container input[type="date"] {
     padding: 8px;
     margin: 10px 0;
     width: 100%;
@@ -26,65 +20,55 @@ input[type="date"] {
     font-size: 16px;
 }
 
-input[type="date"]:focus {
+.booking-page-container input[type="date"]:focus {
     border-color: #007bff;
     outline: none;
 }
 
-/* Button styling */
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 10px;
+/* 可用时间段按钮 */
+.slots-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
-button:hover {
+.slots-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+}
+
+.slots-container button:hover {
     background-color: #0056b3;
 }
 
-button:disabled {
+.slots-container button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-/* Slot buttons styling */
-button + button {
-    margin-left: 10px;
-}
-
-button:disabled {
-    background-color: #ddd;
-}
-
-/* Container for the available slots */
-div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-div button {
-    margin: 10px;
-    width: 120px;
-    height: 40px;
-    font-size: 14px;
-    text-align: center;
-}
-
-/* Styling for the book now button */
-button[type="submit"] {
+/* "Book Now"  */
+.book-now-btn {
+    display: block;
     background-color: #28a745;
-    padding: 12px 30px;
+    color: white;
+    padding: 12px 20px;
     font-size: 18px;
-    width: 100%;
-    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    text-align: center;
+    cursor: pointer;
+    width: fit-content;
 }
 
-button[type="submit"]:hover {
+.book-now-btn:hover {
     background-color: #218838;
 }

@@ -1,7 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import '../styles/ConfirmationPage.css';
 
 function ConfirmationPage({ booking }) {
+    const location = useLocation();
+    booking = booking || location.state?.booking;
+
+    if (!booking) {
+        return <div>You have not booked any court yet!</div>;
+    }
+
     return (
         <div>
             <h2>Booking Confirmation</h2>
