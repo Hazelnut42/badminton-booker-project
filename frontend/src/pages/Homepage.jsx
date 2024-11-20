@@ -16,6 +16,7 @@ const Homepage = () => {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }
                 const data = await res.json();
+                console.log('Fetched courts:', data); // 打印所有球场数据
                 setCourts(data);
             } catch (error) {
                 console.error("Error fetching courts:", error);
@@ -27,9 +28,9 @@ const Homepage = () => {
         fetchCourts();
     }, []);
 
-    const filteredCourts = courts.filter(court =>
-        court.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredCourts = Array.isArray(courts)
+        ? courts.filter(court => court.name.toLowerCase().includes(search.toLowerCase()))
+        : [];
 
     return (
         <div className="homepage-container">
@@ -48,14 +49,17 @@ const Homepage = () => {
                 <p className="error">{error}</p>
             ) : (
                 <div className="courts-list">
-                    {filteredCourts.map(court => (
-                        <div key={court._id} className="court-item">
-                            <img src={court.image} alt={court.name} />
-                            <h2>{court.name}</h2>
-                            <p>{court.address}</p>
-                            <Link to={`/court/${court._id}`}>View Details</Link>
-                        </div>
-                    ))}
+                    {filteredCourts.map(court => {
+                        console.log(`Image path for ${court.name}:`, court.image); // 打印每张图片的路径
+                        return (
+                            <div key={court._id} className="court-item">
+                                <img src={`http://localhost:5001${court.image}`} alt={court.name} />
+                                <h2>{court.name}</h2>
+                                <p>{court.address}</p>
+                                <Link to={`/court/${court._id}`}>View Details</Link>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
         </div>

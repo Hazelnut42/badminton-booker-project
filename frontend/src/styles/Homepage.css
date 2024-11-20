@@ -25,6 +25,22 @@
   border-color: #000;
 }
 
+.header button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header button:hover {
+  background-color: #1a1a1a;
+}
+
 .courts-list {
   display: flex;
   flex-wrap: wrap;
@@ -65,7 +81,7 @@
   display: inline-block;
   padding: 0.5rem 1rem;
   margin: 1rem 0;
-  background-color: #000;
+  background-color: black;
   color: white;
   text-decoration: none;
   font-size: 0.875rem;
@@ -75,4 +91,25 @@
 
 .court-item a:hover {
   background-color: #1a1a1a;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .courts-list {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .court-item {
+      width: 100%;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #6b7280;
+  font-size: 1.2rem;
 }

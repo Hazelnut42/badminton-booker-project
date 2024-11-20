@@ -1,24 +1,32 @@
 require('dotenv').config({ path: '../.env' }); // 加载 .env 文件
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
-const courtsRoutes = require('./routes/courtsRoutes'); // 引入 courts 路由
-const bookingsRoutes = require('./routes/bookRoutes'); // 如果需要，添加 booking 路由
+const courtsRoutes = require('./routes/courtsRoutes');
+const bookingsRoutes = require('./routes/bookRoutes');
 const connectDB = require('./config/db'); // 数据库连接
+const seedDatabase = require('./seed'); // 引入种子数据脚本
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// 连接数据库
-connectDB();
-
+// 连接数据库并初始化种子数据
+connectDB()
+    .then(() => {
+        console.log('MongoDB connected successfully');
+    })
+    .catch(error => console.error('Error connecting to MongoDB:', error.message));
+// 中间件
 app.use(cors());
-app.use(express.json()); // 解析 JSON 请求体
+app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'images'))); // 提供静态图片路径
 
 // 路由
-app.use('/api/auth', authRoutes); // 认证相关路由
-app.use('/api/courts', courtsRoutes); // 球场相关路由
-app.use('/api/bookings', bookingsRoutes); // 如果需要，添加 booking 路由
+app.use('/api/auth', authRoutes);
+app.use('/api/courts', courtsRoutes);
+app.use('/api/bookings', bookingsRoutes);
 
 // 根路由
 app.get('/', (req, res) => {

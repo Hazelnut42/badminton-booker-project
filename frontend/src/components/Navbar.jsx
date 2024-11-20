@@ -14,7 +14,7 @@ const Navbar = ({ isLoggedIn }) => {
 
   return (
     <nav className="navbar">
-      <Link to="/">Home</Link>
+      <Link to="/home">Home</Link>
       <button onClick={handleAccountClick}>Account</button>
     </nav>
   );

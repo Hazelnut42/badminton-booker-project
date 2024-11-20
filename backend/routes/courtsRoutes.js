@@ -4,27 +4,12 @@ const mongoose = require('mongoose');
 
 const router = express.Router();
 
-// 获取所有球场信息（支持分页和搜索）
+// 获取所有球场信息
 router.get('/', async (req, res) => {
-    const { page = 1, limit = 10, search = '' } = req.query;
-
     try {
-        const query = search
-            ? { name: { $regex: search, $options: 'i' } } // 模糊搜索，忽略大小写
-            : {};
-
-        const courts = await Court.find(query)
-            .limit(limit * 1)
-            .skip((page - 1) * limit);
-
-        const total = await Court.countDocuments(query);
-
-        res.json({
-            total,
-            page: parseInt(page),
-            totalPages: Math.ceil(total / limit),
-            courts,
-        });
+        const courts = await Court.find(); // 从数据库中获取球场列表
+        console.log('Courts fetched from DB:', courts); // 调试日志
+        res.json(courts);
     } catch (error) {
         console.error('Error fetching courts:', error.message);
         res.status(500).json({ message: 'Error fetching courts' });
