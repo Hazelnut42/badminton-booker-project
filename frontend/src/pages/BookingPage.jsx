@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; 
 import '../styles/BookingPage.css';
 
-function BookingPage({ courtId, userId }) {
+function BookingPage() {
+    const { courtId, userId } = useParams();
+    console.log(courtId, userId);
+
     const [slots, setSlots] = useState([]);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [date, setDate] = useState('');
@@ -49,11 +53,11 @@ function BookingPage({ courtId, userId }) {
     };
 
     return (
-        <div>
+        <div className="booking-page-container">
             <h2>Book a Slot</h2>
             <label>Date: </label>
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            <div>
+            <div className="slots-container">
                 {slots.map((slot) => (
                     <button
                         key={slot.time}
@@ -64,7 +68,7 @@ function BookingPage({ courtId, userId }) {
                     </button>
                 ))}
             </div>
-            <button onClick={handleBooking}>Book Now</button>
+            <button className="book-now-btn" onClick={handleBooking}>Book Now</button>
         </div>
     );
 }

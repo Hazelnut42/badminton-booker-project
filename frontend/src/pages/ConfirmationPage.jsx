@@ -7,7 +7,7 @@ function ConfirmationPage({ booking }) {
     booking = booking || location.state?.booking;
 
     if (!booking) {
-        return <div>No booking data available</div>;
+        return <div>You have not booked any court yet!</div>;
     }
 
     return (
