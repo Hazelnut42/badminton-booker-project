@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function BookingPage() {
     const { courtId } = useParams(); // courtId will be a dynamic parameter in the URL
@@ -10,7 +10,7 @@ function BookingPage() {
     const [slots, setSlots] = useState([]);
     const [date, setDate] = useState('');
     const [dates, setDates] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
     const [userId, setUserId] = useState(null);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const navigate = useNavigate();
@@ -43,23 +43,24 @@ function BookingPage() {
         fetchAvailability();
     }, [courtId]);
 
-    const groupedSlots = slots.reduce((acc, slot) => {
-        const slotDate = slot.date;
-        if (!acc[slotDate]) {
-            acc[slotDate] = [];
-        }
-        acc[slotDate].push(slot);
-        return acc;
-    }, {});
+    // const groupedSlots = slots.reduce((acc, slot) => {
+    //     const slotDate = slot.date;
+    //     if (!acc[slotDate]) {
+    //         acc[slotDate] = [];
+    //     }
+    //     acc[slotDate].push(slot);
+    //     return acc;
+    // }, {});
 
     const handleBooking = async () => {
         if (!selectedSlot) return alert('Please select a time slot');  // Prompt the user if no time slot is selected
         if (!userId) return alert('User not logged in');
-        const { date, time, isAvailable } = selectedSlot;
+        // const { date, time, isAvailable } = selectedSlot;
+        const { isAvailable } = selectedSlot;
         if (!isAvailable) {
             return alert('This time slot is already booked');
         }
-        const timeSlot = new Date(date); 
+        // const timeSlot = new Date(date); 
         try {
             
             const response = await axios.post('http://localhost:5001/api/bookings/book', {

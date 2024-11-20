@@ -1,119 +1,142 @@
-
 ## 项目结构
+
 ```
 badmintonbooker/
-├── backend/           # 后端代码
-│   ├── config/       # 配置文件目录
-│   │   └── db.js    # MongoDB 连接配置
-│   ├── models/      # 数据模型目录
-│   │   └── User.js  # 用户模型定义
-│   ├── routes/      # 路由目录
-│   │   └── authRoutes.js # 认证相关路由
-│   └── server.js    # 主服务器文件
+├── backend/           # Backend code
+│   ├── config/       # Configuration files
+│   │   └── db.js    # MongoDB connection configuration
+│   ├── models/      # Data models
+│   │   ├── User.js  # User model definition
+│   │   ├── courts.js  # Courts model definition
+│   │   └── booking.js    # Booking model definition
+│   ├── routes/      # API routes
+│   │   ├── courtsRoutes.js  # Courts-related routes
+│   │   ├── bookRoutes.js  # Booking-related routes
+│   │   └── authRoutes.js  # Authentication-related routes
+│   └── server.js    # Main server file
 │
-├── frontend/          # 前端代码
-│   ├── node_modules/ # 依赖包
-│   ├── public/      # 静态资源
-│   ├── src/         # 源代码
-│   │   ├── components/ # React 组件
-│   │   ├── pages/   # 页面组件
-│   │   ├── styles/  # CSS 样式
-│   │   ├── App.js  
+├── frontend/          # Frontend code
+│   ├── node_modules/ # Dependencies
+│   ├── public/      # Static assets
+│   ├── src/         # Source code
+│   │   ├── components/ # React components
+│   │   ├── pages/   # Page components
+│   │   ├── styles/  # CSS styles
+│   │   ├── App.js
 │   │   └── index.js
-│   └── package.json # 项目依赖配置
+│   └── package.json # Project dependencies configuration
 │
-├── .env.example      # 环境变量示例文件
-├── .gitignore       # Git 忽略文件
-└── README.md        # 项目说明文档
+├── .env.example      # Environment variables example file
+├── .gitignore       # Git ignore file
+└── README.md        # Project documentation
 ```
 
-## 项目设置
+## Project Setup
 
-### 前置要求
-- Node.js (v14 或更高版本)
-- npm 或 yarn
-- MongoDB Atlas 账号
+### Prerequisites
 
-### 安装步骤
+- Node.js (v14 or higher)
+- npm or yarn
+- MongoDB Atlas account
 
-1. **克隆项目**
+### Installation Steps
+
+1. **Clone the Repository**
+
 ```bash
 git clone https://github.com/Hazelnut42/badminton-booker-project.git
 cd badminton-booker-project
 ```
 
-2. **后端设置**
+2. **Backend Setup**
+
 ```bash
-# 进入后端目录
+# Navigate to the backend directory
 cd backend
 
-# 安装依赖
+# Install dependencies
 npm install
 
-# 创建 .env 文件
-# 将 .env.example 重命名为 .env 并更新MongoDB 连接字符串（使用Hazel的密钥，需要时请私聊联系！）
-mv ../.env.example .env  # 或手动重命名
+# Create .env file
+# Create a new .env file and update the MongoDB connection string based on the .env.example format
+# (Using Hazel's key. Contact privately for details!)
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/database
 ```
 
-3. **前端设置**
+3. **Frontend Setup**
+
 ```bash
-# 进入前端目录
+# Navigate to the frontend directory
 cd frontend
 
-# 安装依赖
+# Install dependencies
 npm install
 ```
 
-⚠️ 重要提示：必须将 `.env.example` 文件重命名为 `.env`，然后更新其中的数据库连接信息！
+⚠️ Important Note: You must create a `.env` file and update it with your database connection information.
 
-.env 文件结构示例:
+Example `.env` file structure:
+
 ```
-MONGO_URI=mongodb+srv://<用户名>:<密码>@cluster0.xxxxx.mongodb.net/<数据库名>
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/<database-name>
 ```
 
-### 运行应用
+### Running the Application
 
-1. **启动后端服务器**
+1. **Start the Backend Server**
+
 ```bash
-# 在 backend 目录下
+# From the backend directory
 node server.js
 ```
 
-2. **启动前端开发服务器**
+2. **Start the Frontend Development Server**
+
 ```bash
-# 在 frontend 目录下
+# From the frontend directory
 npm start
 ```
 
-应用将在以下地址运行:
-- 前端: http://localhost:3000
-- 后端: http://localhost:5001
+The application will run at the following addresses:
 
-## 参与贡献
+- frontend: http://localhost:3000
+- backend: http://localhost:5001
 
-1. 为你的功能创建新分支
+## Contributing
+
+1. Create a new branch for your feature
+
 ```bash
-git checkout -b feature/你的功能名称
+git checkout -b feature/your-feature-name
 ```
 
-2. 提交你的修改
+2. Commit your changes
+
 ```bash
 git add .
-git commit -m "修改描述"
-git push origin feature/你的功能名称
+git commit -m "Description of changes"
+git push origin feature/your-feature-name
 ```
 
-3. 在 GitHub 上创建 Pull Request
+3. Open a Pull Request on GitHub
 
-## 当前功能
-- 用户认证（注册/登录）
-- 更多功能开发中...
+## Current Features
 
-## 项目开发说明
-- 使用共享的 MongoDB 数据库进行开发
-- 提交代码前请先测试功能是否正常
+- User authentication (Sign up/Login)
+- Browse courts
+- Book courts
+- View booking history
+- Cancel reservations
+- View and update user profile
+- More features in development...
 
-## 常见问题解决
-1. 如果遇到依赖安装问题，尝试删除 node_modules 文件夹后重新安装
-2. 确保 .env 文件（不是 .env.example）存在且数据库连接字符串格式正确
-3. 确保 MongoDB Atlas 允许你的 IP 地址访问
+## Development Notes
+
+- A shared MongoDB database is used for development.
+- Test all functionalities before committing code.
+
+## Troubleshooting
+
+1. If you encounter issues with dependencies, try deleting the node_modules folder and reinstalling them.
+2. Ensure that the .env file (not .env.example) exists and that the database connection string is formatted correctly.
+3. Verify that your IP address is allowed in MongoDB Atlas.
