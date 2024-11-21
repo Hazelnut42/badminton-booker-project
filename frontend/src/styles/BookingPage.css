@@ -38,3 +38,11 @@ button:hover:not(:disabled) {
     background-color: #0056b3;
     opacity: 0.8;
 }
+
+@media (max-width: 768px) {
+    table.slots-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }

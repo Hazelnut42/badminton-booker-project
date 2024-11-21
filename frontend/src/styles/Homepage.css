@@ -42,10 +42,10 @@
 }
 
 .courts-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  justify-content: center;
+  justify-items: center;
 }
 
 .court-item {
@@ -53,8 +53,8 @@
   border-radius: 8px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  width: 280px;
-  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
   text-align: center;
 }
 
@@ -93,7 +93,6 @@
   background-color: #1a1a1a;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
   .courts-list {
       flex-direction: column;
