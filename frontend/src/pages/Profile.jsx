@@ -74,11 +74,9 @@ const Profile = ({ user }) => {
 
   const handleCancelBooking = async (bookingId) => {
     try {
-      const confirmed = window.confirm('Are you sure you want to cancel this booking?');
-      if (!confirmed) return;
-
       await axios.delete(`http://localhost:5001/api/bookings/${bookingId}`);
       
+      // 直接从 upcomingBookings 中移除已取消的预订
       setUpcomingBookings(prevBookings => 
         prevBookings.filter(booking => booking._id !== bookingId)
       );
@@ -161,7 +159,7 @@ const Profile = ({ user }) => {
           <div className="profile-info">
             <div className="avatar-container">
               <div className="avatar-circle">
-                {userData?.displayName?.charAt(0) || userData?.username?.charAt(0)}
+                {(userData?.displayName?.charAt(0) || userData?.username?.charAt(0))?.toUpperCase()}
               </div>
             </div>
             <div className="user-details">
