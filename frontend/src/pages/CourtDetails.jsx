@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CourtDetails.css';
 
-// 全局定义 initMap 函数
 window.initMap = () => {
   console.log('Google Maps API loaded');
 };
@@ -14,7 +13,6 @@ const CourtDetails = () => {
   const [error, setError] = useState(null);
   const [mapsLoaded, setMapsLoaded] = useState(false);
 
-  // 添加调试日志
   useEffect(() => {
     console.log('Current court data:', court);
     console.log('Maps loaded status:', mapsLoaded);
@@ -53,7 +51,6 @@ const CourtDetails = () => {
     };
   }, []);
 
-  // 获取场地信息
   useEffect(() => {
     async function fetchCourtDetails() {
       try {
@@ -62,7 +59,7 @@ const CourtDetails = () => {
           throw new Error('Failed to fetch court details');
         }
         const data = await res.json();
-        console.log('Fetched court data:', data); // 添加日志
+        console.log('Fetched court data:', data);
         if (!data.coordinates) {
           throw new Error('Court coordinates not found');
         }
@@ -75,7 +72,6 @@ const CourtDetails = () => {
     fetchCourtDetails();
   }, [id]);
 
-  // 初始化地图
   useEffect(() => {
     if (court && mapsLoaded && window.google) {
       console.log('Initializing map with coordinates:', court.coordinates);

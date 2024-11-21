@@ -49,15 +49,24 @@
     gap: 2rem;
 }
 
-.avatar-container {
-    flex-shrink: 0;
-}
-
 .avatar-circle {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     background-color: #d1d5db;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    color: white;
+    text-transform: uppercase;
+}
+
+.avatar-container {
+    flex-shrink: 0;
+    position: relative;
+    width: 120px;
+    height: 120px;
 }
 
 .user-details {
@@ -82,7 +91,6 @@
     color: white;
 }
 
-/* 更新的 static-field 样式 */
 .static-field {
     display: block;
     color: #e5e7eb;
@@ -229,6 +237,7 @@
 
 .booking-details p {
     color: #6b7280;
+    text-align: left;
 }
 
 .booking-status {
@@ -254,7 +263,6 @@
     font-size: 1.2rem;
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
     .profile-header {
         flex-direction: column;
@@ -296,7 +304,6 @@
     }
 }
 
-/* 按钮悬停效果 */
 .edit-button:hover {
     background-color: #1a1a1a;
 }
@@ -313,3 +320,4 @@
 .cancel-reservation:hover {
     background-color: #dc2626;
 }
+

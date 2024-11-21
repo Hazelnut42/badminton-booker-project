@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import axios from 'axios';
 import '../styles/Profile.css';
 
 const Profile = ({ user }) => {
   const [userData, setUserData] = useState(null);
+  const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +18,8 @@ const Profile = ({ user }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserData();
+    Promise.all([fetchUserData(), fetchBookingHistory()])
+      .finally(() => setIsLoading(false));
   }, []);
 
   const fetchUserData = async () => {
@@ -45,8 +49,44 @@ const Profile = ({ user }) => {
     } catch (err) {
       setError('Failed to load profile');
       console.error('Profile error:', err);
-    } finally {
-      setIsLoading(false);
+    }
+  };
+
+  const fetchBookingHistory = async () => {
+    try {
+      const userId = localStorage.getItem('user_id');
+      const response = await axios.get(`http://localhost:5001/api/bookings/history/${userId}`);
+      
+      if (response.data && Array.isArray(response.data)) {
+        const now = moment();
+        const upcoming = response.data.filter(booking => {
+          const bookingDate = moment(booking.timeSlot);
+          return bookingDate.isAfter(now) && booking.status !== 'cancelled';
+        });
+        
+        setUpcomingBookings(upcoming.sort((a, b) => moment(a.timeSlot) - moment(b.timeSlot)));
+      }
+    } catch (err) {
+      console.error('Error fetching bookings:', err);
+      setError('Failed to load bookings');
+    }
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    try {
+      const confirmed = window.confirm('Are you sure you want to cancel this booking?');
+      if (!confirmed) return;
+
+      await axios.delete(`http://localhost:5001/api/bookings/${bookingId}`);
+      
+      setUpcomingBookings(prevBookings => 
+        prevBookings.filter(booking => booking._id !== bookingId)
+      );
+      
+      alert('Booking cancelled successfully');
+    } catch (err) {
+      console.error('Error cancelling booking:', err);
+      alert('Failed to cancel booking. Please try again.');
     }
   };
 
@@ -80,6 +120,7 @@ const Profile = ({ user }) => {
       setUserData(updatedData);
       setIsEditing(false);
       setError('');
+      alert('Profile updated successfully');
     } catch (err) {
       console.error('Update error:', err);
       setError(err.message || 'Failed to update profile');
@@ -93,11 +134,13 @@ const Profile = ({ user }) => {
     navigate('/login');
   };
 
-  if (isLoading) return (
-    <div className="profile-page">
-      <div className="loading">Loading...</div>
-    </div>
-  );
+  if (isLoading) {
+    return (
+      <div className="profile-page">
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -107,13 +150,19 @@ const Profile = ({ user }) => {
     );
   }
 
+  const formatTimeSlot = (timeSlot) => {
+    return moment(timeSlot).format('YYYY-MM-DD HH:mm');
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-hero">
         <div className="profile-header">
           <div className="profile-info">
             <div className="avatar-container">
-              <div className="avatar-circle"></div>
+              <div className="avatar-circle">
+                {userData?.displayName?.charAt(0) || userData?.username?.charAt(0)}
+              </div>
             </div>
             <div className="user-details">
               {!isEditing ? (
@@ -156,6 +205,7 @@ const Profile = ({ user }) => {
                       onChange={(e) => setEditedData({...editedData, displayName: e.target.value})}
                       className="edit-input"
                       placeholder="Enter display name"
+                      maxLength={30}
                     />
                   </div>
                   <div className="info-field">
@@ -186,11 +236,11 @@ const Profile = ({ user }) => {
               </>
             ) : (
               <>
-                <button className="logout-button" onClick={handleLogout}>
-                  Logout
-                </button>
                 <button className="edit-button" onClick={() => setIsEditing(true)}>
                   Edit Profile
+                </button>
+                <button className="logout-button" onClick={handleLogout}>
+                  Logout
                 </button>
               </>
             )}
@@ -199,40 +249,35 @@ const Profile = ({ user }) => {
       </div>
 
       <div className="profile-content">
-        <h2>Booking History</h2>
-        <div className="booking-list">
-          <div className="booking-item">
-            <div className="booking-date">
-              <div className="date-box">17</div>
-              <span>OCT</span>
-            </div>
-            <div className="booking-details">
-              <h3>Court 1 - Vancouver Sports Center</h3>
-              <p>Date: 10/20/2022</p>
-            </div>
-            <div className="booking-status">Paid</div>
-          </div>
-          <div className="booking-item">
-            <div className="booking-date">
-              <div className="date-box">15</div>
-              <span>SEP</span>
-            </div>
-            <div className="booking-details">
-              <h3>Court 3 - Badminton Arena</h3>
-              <p>Date: 09/15/2022</p>
-            </div>
-            <div className="booking-status">Paid</div>
-          </div>
-        </div>
-
-        <h2>Upcoming Reservations</h2>
-        <div className="booking-list">
-          <div className="booking-item">
-            <div className="booking-details">
-              <h3>Court 2 - Sports Hub Center</h3>
-              <p>Date: 11/05/2022, Status: Confirmed</p>
-            </div>
-            <button className="cancel-reservation">Cancel</button>
+        <div className="bookings-section">
+          <h2>Upcoming Reservations</h2>
+          <div className="booking-list">
+            {upcomingBookings.length === 0 ? (
+              <div className="no-bookings">No upcoming reservations</div>
+            ) : (
+              upcomingBookings.map((booking) => (
+                <div key={booking._id} className="booking-item">
+                  <div className="booking-date">
+                    <div className="date-box">
+                      {moment(booking.timeSlot).format('DD')}
+                    </div>
+                    <span>{moment(booking.timeSlot).format('MMM')}</span>
+                  </div>
+                  <div className="booking-details">
+                    <h3>{booking.courtId.name}</h3>
+                    <p>Time: {formatTimeSlot(booking.timeSlot)}</p>
+                    <p>Location: {booking.courtId.address}</p>
+                    <p>Status: <span className="status-tag">Confirmed</span></p>
+                  </div>
+                  <button 
+                    className="cancel-reservation"
+                    onClick={() => handleCancelBooking(booking._id)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
