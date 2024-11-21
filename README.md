@@ -61,6 +61,8 @@ npm install
 # Create a new .env file and update the MongoDB connection string based on the .env.example format
 # (Using Hazel's key. Contact privately for details!)
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+JWT_SECRET=XXXXXXXXXXXXXX
+REACT_APP_GOOGLE_MAPS_API_KEY=XXXXXXXXXXXXXXXXXXXX
 ```
 
 3. **Frontend Setup**
@@ -79,6 +81,8 @@ Example `.env` file structure:
 
 ```
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/<database-name>
+JWT_SECRET=XXXXXXXXXXXXXX
+REACT_APP_GOOGLE_MAPS_API_KEY=XXXXXXXXXXXXXXXXXXXX
 ```
 
 ### Running the Application
