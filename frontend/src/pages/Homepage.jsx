@@ -53,7 +53,7 @@ const Homepage = () => {
                         console.log(`Image path for ${court.name}:`, court.image);
                         return (
                             <div key={court._id} className="court-item">
-                                <img src={`http://localhost:5001${court.image}`} alt={court.name} />
+                                <img src={`${court.image}`} alt={court.name} />
                                 <h2>{court.name}</h2>
                                 <p>{court.address}</p>
                                 <Link to={`/court/${court._id}`}>View Details</Link>
