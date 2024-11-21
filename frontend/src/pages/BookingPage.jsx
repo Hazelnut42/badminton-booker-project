@@ -118,11 +118,11 @@ function BookingPage() {
                                             slot.isAvailable ? (
                                                 <button
                                                     style={{
-                                                        backgroundColor: selectedSlot && selectedSlot.time === hour && selectedSlot.date === day ? 'purple' : 'green',  // 如果选中了该时段，则变成紫色
+                                                        backgroundColor: selectedSlot && selectedSlot.time === hour && selectedSlot.date === day ? 'purple' : 'green',
                                                         color: 'white',
                                                         cursor: 'pointer',
                                                     }}
-                                                    onClick={() => setSelectedSlot(slot)}  // 选择该 slot
+                                                    onClick={() => setSelectedSlot(slot)}
                                                 >
                                                     {selectedSlot && selectedSlot.time === hour && selectedSlot.date === day ? 'Selected' : 'Available'}
                                                 </button>
