@@ -2,36 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CourtDetails.css';
 
+// 全局定义 initMap 函数
+window.initMap = () => {
+  console.log('Google Maps API loaded');
+};
+
 const CourtDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [court, setCourt] = useState(null);
   const [error, setError] = useState(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapsLoaded, setMapsLoaded] = useState(false);
 
-  // Load Google Maps Script
+  // 添加调试日志
   useEffect(() => {
-    // Check if Google Maps is already loaded
+    console.log('Current court data:', court);
+    console.log('Maps loaded status:', mapsLoaded);
+    console.log('Google object:', window.google);
+  }, [court, mapsLoaded]);
+
+  useEffect(() => {
+    console.log('API Key:', process.env.REACT_APP_GOOGLE_MAPS_API_KEY); 
     if (window.google) {
-      setMapLoaded(true);
+      setMapsLoaded(true);
       return;
     }
 
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD2FAXYa0XZ-xSz29Almhfj6OizW64x_RA&callback=initMap`;
     script.async = true;
+    script.defer = true;
+
     script.onload = () => {
-      setMapLoaded(true);
+      console.log('Script loaded successfully');
+      setMapsLoaded(true);
     };
+
+    script.onerror = (error) => {
+      console.error('Error loading Google Maps script:', error);
+      setError('Failed to load map. Please try again later.');
+    };
+
     document.head.appendChild(script);
 
     return () => {
-      // Cleanup if component unmounts during loading
-      document.head.removeChild(script);
+      const scriptElement = document.querySelector(`script[src="${script.src}"]`);
+      if (scriptElement) {
+        document.head.removeChild(scriptElement);
+      }
     };
   }, []);
 
-  // Fetch court details
+  // 获取场地信息
   useEffect(() => {
     async function fetchCourtDetails() {
       try {
@@ -40,48 +62,46 @@ const CourtDetails = () => {
           throw new Error('Failed to fetch court details');
         }
         const data = await res.json();
+        console.log('Fetched court data:', data); // 添加日志
+        if (!data.coordinates) {
+          throw new Error('Court coordinates not found');
+        }
         setCourt(data);
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching court details:', err);
         setError('Unable to load court details. Please try again later.');
       }
     }
     fetchCourtDetails();
   }, [id]);
 
-  // Initialize map when both court data and Google Maps are loaded
+  // 初始化地图
   useEffect(() => {
-    if (court && mapLoaded && window.google) {
-      const map = new window.google.maps.Map(document.getElementById('map'), {
-        center: { lat: court.coordinates.lat, lng: court.coordinates.lng },
-        zoom: 14,
-        mapTypeControl: false,
-        fullscreenControl: true,
-        streetViewControl: true,
-        zoomControl: true,
-      });
+    if (court && mapsLoaded && window.google) {
+      console.log('Initializing map with coordinates:', court.coordinates);
+      try {
+        const map = new window.google.maps.Map(document.getElementById('map'), {
+          center: { lat: court.coordinates.lat, lng: court.coordinates.lng },
+          zoom: 14,
+          mapTypeControl: true,
+          fullscreenControl: true,
+          streetViewControl: true,
+          zoomControl: true
+        });
 
-      const marker = new window.google.maps.Marker({
-        position: { lat: court.coordinates.lat, lng: court.coordinates.lng },
-        map: map,
-        title: court.name,
-      });
-
-      // Optional: Add info window
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: `
-          <div>
-            <h3>${court.name}</h3>
-            <p>${court.address}</p>
-          </div>
-        `
-      });
-
-      marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-      });
+        new window.google.maps.Marker({
+          position: { lat: court.coordinates.lat, lng: court.coordinates.lng },
+          map: map,
+          title: court.name
+        });
+        
+        console.log('Map initialized successfully');
+      } catch (err) {
+        console.error('Error initializing map:', err);
+        setError('Error loading map component');
+      }
     }
-  }, [court, mapLoaded]);
+  }, [court, mapsLoaded]);
 
   if (error) return <div className="error">{error}</div>;
   if (!court) return <div>Loading...</div>;
@@ -91,17 +111,17 @@ const CourtDetails = () => {
       <h1>{court.name}</h1>
       <img src={court.image} alt={court.name} />
       <p>{court.address}</p>
-      <div id="map" style={{ 
-        width: '100%', 
-        height: '400px', 
-        margin: '20px 0',
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}></div>
-      <button 
-        className="book-now" 
-        onClick={() => navigate(`/bookings/${id}`)}
-      >
+      <div 
+        id="map" 
+        style={{ 
+          width: '100%', 
+          height: '400px', 
+          margin: '20px 0',
+          borderRadius: '8px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      ></div>
+      <button className="book-now" onClick={() => navigate(`/bookings/${id}`)}>
         Book Now
       </button>
     </div>
