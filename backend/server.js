@@ -7,6 +7,7 @@ const courtsRoutes = require('./routes/courtsRoutes');
 const bookingsRoutes = require('./routes/bookRoutes');
 const connectDB = require('./config/db'); // Database connection
 const seedDatabase = require('./seed'); // Import seed data script
+const fs = require('fs');  // 导入 fs 模块
 
 const app = express(); // Initialize app
 const PORT = process.env.PORT || 5001;
