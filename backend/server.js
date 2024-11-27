@@ -37,9 +37,9 @@ app.use(express.json());
 
 
 // Root route
-app.get('/', (req, res) => {
-    res.send('Welcome to the server!');
-});
+// app.get('/', (req, res) => {
+//     res.send('Welcome to the server!');
+// });
 // Serve static image files
 app.use('/images', express.static(path.join(__dirname, 'images')));
 // Routes
