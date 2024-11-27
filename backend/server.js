@@ -21,25 +21,6 @@ fs.readdir(buildDir, (err, files) => {
     }
 });
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courts', courtsRoutes);
-app.use('/api/bookings', bookingsRoutes);
-
-
-// Serve static files from React build folder
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-    // For all routes, send back the React app
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-    });
-}
-
-// Serve static image files
-
 // Connect to the database and initialize seed data
 connectDB()
     .then(() => {
@@ -59,7 +40,23 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Welcome to the server!');
 });
+// Serve static image files
+app.use('/images', express.static(path.join(__dirname, 'images')));
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/courts', courtsRoutes);
+app.use('/api/bookings', bookingsRoutes);
 
+
+// Serve static files from React build folder
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+    // For all routes, send back the React app
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+    });
+}
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
