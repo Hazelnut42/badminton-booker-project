@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
+
+const apiUrl = config.apiUrl;
 
 function BookingPage() {
     const { courtId } = useParams(); // courtId will be a dynamic parameter in the URL
@@ -37,7 +40,7 @@ function BookingPage() {
         async function fetchAvailability() {
         
         
-        const res = await axios.get(`http://localhost:5001/api/bookings/availability`, { params: { courtId } });
+        const res = await axios.get(`${apiUrl}bookings/availability`, { params: { courtId } });
         setSlots(res.data.availableSlots);
         }
         fetchAvailability();

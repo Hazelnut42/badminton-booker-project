@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import axios from 'axios';
 import '../styles/Profile.css';
+import config from '../config';
+
+const apiUrl = config.apiUrl;
 
 const Profile = ({ user }) => {
   const [userData, setUserData] = useState(null);
@@ -55,7 +58,7 @@ const Profile = ({ user }) => {
   const fetchBookingHistory = async () => {
     try {
       const userId = localStorage.getItem('user_id');
-      const response = await axios.get(`http://localhost:5001/api/bookings/history/${userId}`);
+      const response = await axios.get(`${apiUrl}bookings/history/${userId}`);
       
       if (response.data && Array.isArray(response.data)) {
         const now = moment();
