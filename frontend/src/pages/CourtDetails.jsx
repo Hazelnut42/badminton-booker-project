@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/CourtDetails.css';
+import config from '../config';
+
+const apiUrl = config.apiUrl;
 
 window.initMap = () => {
   console.log('Google Maps API loaded');
@@ -54,7 +57,7 @@ const CourtDetails = () => {
   useEffect(() => {
     async function fetchCourtDetails() {
       try {
-        const res = await fetch(`http://localhost:5001/api/courts/${id}`);
+        const res = await fetch(`${apiUrl}/courts/${id}`);
         if (!res.ok) {
           throw new Error('Failed to fetch court details');
         }

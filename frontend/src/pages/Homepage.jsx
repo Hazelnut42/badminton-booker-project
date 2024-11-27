@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Homepage.css';
+import config from '../config';
+
+const apiUrl = config.apiUrl;
 
 const Homepage = () => {
     const [courts, setCourts] = useState([]);
@@ -11,7 +14,7 @@ const Homepage = () => {
     useEffect(() => {
         const fetchCourts = async () => {
             try {
-                const res = await fetch('http://localhost:5001/api/courts');
+                const res = await fetch(`${apiUrl}/courts`);
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }

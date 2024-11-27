@@ -33,7 +33,7 @@ const Profile = ({ user }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/auth/profile', {
+      const response = await fetch(`${apiUrl}/auth/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -58,7 +58,7 @@ const Profile = ({ user }) => {
   const fetchBookingHistory = async () => {
     try {
       const userId = localStorage.getItem('user_id');
-      const response = await axios.get(`${apiUrl}bookings/history/${userId}`);
+      const response = await axios.get(`${apiUrl}/bookings/history/${userId}`);
       
       if (response.data && Array.isArray(response.data)) {
         const now = moment();
@@ -77,7 +77,7 @@ const Profile = ({ user }) => {
 
   const handleCancelBooking = async (bookingId) => {
     try {
-      await axios.delete(`http://localhost:5001/api/bookings/${bookingId}`);
+      await axios.delete(`${apiUrl}/bookings/${bookingId}`);
       
       // 直接从 upcomingBookings 中移除已取消的预订
       setUpcomingBookings(prevBookings => 
@@ -100,7 +100,7 @@ const Profile = ({ user }) => {
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/auth/profile/update', {
+      const response = await fetch('${apiUrl}/auth/profile/update', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/Login.css';
+import config from '../config';
+
+const apiUrl = config.apiUrl;
 
 const Login = ({ setIsLoggedIn, setUser }) => {
   const [username, setUsername] = useState('');
@@ -18,7 +21,7 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     setError('');
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/auth/login', {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

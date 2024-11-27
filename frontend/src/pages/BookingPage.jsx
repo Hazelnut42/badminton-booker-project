@@ -40,7 +40,7 @@ function BookingPage() {
         async function fetchAvailability() {
         
         
-        const res = await axios.get(`${apiUrl}bookings/availability`, { params: { courtId } });
+        const res = await axios.get(`${apiUrl}/bookings/availability`, { params: { courtId } });
         setSlots(res.data.availableSlots);
         }
         fetchAvailability();
@@ -66,7 +66,7 @@ function BookingPage() {
         // const timeSlot = new Date(date); 
         try {
             
-            const response = await axios.post('http://localhost:5001/api/bookings/book', {
+            const response = await axios.post(`${apiUrl}/bookings/book`, {
                 userId,
                 courtId,
                 date: selectedSlot.date,
