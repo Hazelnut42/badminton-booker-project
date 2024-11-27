@@ -21,6 +21,12 @@ fs.readdir(buildDir, (err, files) => {
     }
 });
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/courts', courtsRoutes);
+app.use('/api/bookings', bookingsRoutes);
+
 
 // Serve static files from React build folder
 if (process.env.NODE_ENV === 'production') {
@@ -33,7 +39,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Serve static image files
-app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Connect to the database and initialize seed data
 connectDB()
@@ -48,10 +53,7 @@ connectDB()
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courts', courtsRoutes);
-app.use('/api/bookings', bookingsRoutes);
+
 
 // Root route
 app.get('/', (req, res) => {
