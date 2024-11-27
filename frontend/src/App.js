@@ -42,7 +42,12 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Booking page */}
-        <Route path="/bookings/:courtId" element={<BookingPage />} />
+        <Route path="/bookings/:courtId" element={
+          <PrivateRoute>
+            <BookingPage user={user} />
+          </PrivateRoute>
+        }
+        />
 
         {/* Confirmation page */}
         <Route path="/confirmation" element={<ConfirmationPage />} />
