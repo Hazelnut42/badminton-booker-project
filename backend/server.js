@@ -11,6 +11,16 @@ const seedDatabase = require('./seed'); // Import seed data script
 const app = express(); // Initialize app
 const PORT = process.env.PORT || 5001;
 
+const buildDir = path.join(__dirname, '../frontend/build');
+fs.readdir(buildDir, (err, files) => {
+    if (err) {
+        console.error('Error reading build directory:', err);
+    } else {
+        console.log('Files in frontend/build:', files);
+    }
+});
+
+
 // Serve static files from React build folder
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../frontend/build')));
