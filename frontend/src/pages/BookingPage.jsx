@@ -89,13 +89,17 @@ function BookingPage() {
     return (
         <div className="booking-page-container">
             <h2>Book a Slot</h2>
-            <label>Date: </label>
+            <label style={{
+                                    paddingLeft: '20px',
+                                    paddingRight: '20px',
+                                        }}>Today Date: </label>
             <input 
                 type="date" 
                 value={date} 
                 onChange={(e) => setDate(e.target.value)} 
                 disabled
             />
+            <div style={{ height: '20px' }}></div>
 
             {/* Display slots in a table */}
             <table className="slots-table">
@@ -103,7 +107,7 @@ function BookingPage() {
                     <tr>
                         <th>Date</th>
                         {/* Show time slots for each hour */}
-                        {[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((hour) => (
+                        {[8, 9, 10, 11, 12, 13, 14, 15, 16].map((hour) => (
                             <th key={hour}>{`${hour}:00-${hour + 1}:00`}</th>
                         ))}
                     </tr>
@@ -111,9 +115,12 @@ function BookingPage() {
                 <tbody>
                     {dates.map((day) => (
                         <tr key={day}>
-                            <td>{day}</td>
+                            <td style={{
+                                    paddingLeft: '20px',
+                                    paddingRight: '20px',
+                                        }}>{day}</td>
                             {/* Display time slots for each date */}
-                            {[8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((hour) => {
+                            {[8, 9, 10, 11, 12, 13, 14, 15, 16].map((hour) => {
                                 const slot = slots.find(slot => slot.date === day && slot.time === hour);
                                     return (
                                         <td key={hour}>
@@ -155,7 +162,7 @@ function BookingPage() {
                 onClick={handleBooking}
                 style={{
                     marginTop: '20px',
-                    backgroundColor: 'blue',
+                    backgroundColor: 'black',
                     color: 'white',
                     padding: '10px 20px',
                     cursor: 'pointer'

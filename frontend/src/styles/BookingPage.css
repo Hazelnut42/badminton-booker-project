@@ -1,4 +1,6 @@
 .booking-page-container {
+    padding-left: 20px;
+    margin-left: 20px;
     padding: 20px;
 }
 
@@ -6,6 +8,7 @@ table.slots-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin-left: 20px;
     text-align: center;
 }
 
@@ -21,7 +24,7 @@ table.slots-table th {
 
 button {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 5px;
@@ -35,7 +38,7 @@ button:disabled {
 }
 
 button:hover:not(:disabled) {
-    background-color: #0056b3;
+    background-color: black;
     opacity: 0.8;
 }
 
