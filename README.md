@@ -144,3 +144,11 @@ git push origin feature/your-feature-name
 1. If you encounter issues with dependencies, try deleting the node_modules folder and reinstalling them.
 2. Ensure that the .env file (not .env.example) exists and that the database connection string is formatted correctly.
 3. Verify that your IP address is allowed in MongoDB Atlas.
+
+4. Testing:
+- The testing suite ensures the robustness and reliability of the BadmintonBooker application. It includes unit tests for both frontend and backend components, covering CRUD operations, form validation, and external API integrations.
+
+- Tests ensure:
+- All required fields must be filled before form submission.
+- Passwords meet complexity requirements (min length, etc.).
+- Invalid inputs display appropriate error messages.
