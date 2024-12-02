@@ -34,17 +34,18 @@ function BookingPage() {
         }
         setDates(upcomingDates);
         console.log(upcomingDates);
-    }, []);
 
-    useEffect(() => {
         async function fetchAvailability() {
         
         
-        const res = await axios.get(`${apiUrl}/bookings/availability`, { params: { courtId } });
-        setSlots(res.data.availableSlots);
-        }
+            const res = await axios.get(`${apiUrl}/bookings/availability`, { params: { courtId, date } });
+            setSlots(res.data.availableSlots);
+            }
         fetchAvailability();
-    }, [courtId]);
+    }, [courtId, date]);
+
+    // useEffect(() => {
+    // }, [courtId, date]);
 
     // const groupedSlots = slots.reduce((acc, slot) => {
     //     const slotDate = slot.date;
