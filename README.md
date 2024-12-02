@@ -145,7 +145,7 @@ git push origin feature/your-feature-name
 2. Ensure that the .env file (not .env.example) exists and that the database connection string is formatted correctly.
 3. Verify that your IP address is allowed in MongoDB Atlas.
 
-4. Testing:
+## Testing
 - The testing suite ensures the robustness and reliability of the BadmintonBooker application. It includes unit tests for both frontend and backend components, covering CRUD operations, form validation, and external API integrations.
 
 - Tests ensure:
