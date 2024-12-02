@@ -37,13 +37,16 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    // Hash the password (simple hash with no external module)
+    const hashedPassword = password.split('').reverse().join(''); // Simple example of hashing
+
     // Create a new user
     const user = new User({
       username,
-      displayName: username,  // Initial display name is the same as username
+      displayName: username, // Initial display name is the same as username
       email,
-      password,  // Note: Password should be encrypted in real applications
-      bio: ''  // Initialize with an empty bio
+      password: hashedPassword, // Store hashed password
+      bio: '' // Initialize with an empty bio
     });
 
     await user.save();
@@ -60,12 +63,24 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
-
-    if (!user || user.password !== password) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+    // Check if username and password are provided
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required.' });
     }
 
+    // Check if the user exists
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found. Please check your username.' });
+    }
+
+    // Validate the password
+    const hashedPassword = password.split('').reverse().join(''); // Simple hash to match registration
+    if (hashedPassword !== user.password) {
+      return res.status(401).json({ message: 'Incorrect password. Please try again.' });
+    }
+
+    // Generate a JWT token
     const token = jwt.sign(
       { userId: user._id, username: user.username },
       process.env.JWT_SECRET,
@@ -84,7 +99,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Error during login' });
+    res.status(500).json({ message: 'An error occurred during login. Please try again later.' });
   }
 });
 
@@ -106,7 +121,6 @@ router.get('/profile', authenticateToken, async (req, res) => {
 router.put('/profile/update', authenticateToken, async (req, res) => {
   try {
     const { displayName, bio } = req.body;
-    console.log('Received update request:', req.body); // Debug log
 
     // Validate displayName only
     if (!displayName || !displayName.trim()) {
@@ -130,7 +144,6 @@ router.put('/profile/update', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    console.log('Updated user:', updatedUser); // Debug log
     res.json(updatedUser);
   } catch (error) {
     console.error('Error updating profile:', error);

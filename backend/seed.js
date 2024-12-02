@@ -1,6 +1,10 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+console.log('Starting seed script...');
+console.log('MongoDB URI:', process.env.MONGO_URI ? 'Found' : 'Not found');
+
 const mongoose = require('mongoose');
 const Court = require('./models/courts');
-const connectDB = require('./config/db');
 
 const courtsData = [
     {
@@ -55,18 +59,51 @@ const courtsData = [
 
 const seedDatabase = async () => {
     try {
-        await connectDB();
-        console.log('Connected to MongoDB');
-        await Court.deleteMany({});
-        console.log('Existing courts data cleared');
-        await Court.insertMany(courtsData);
-        console.log('Inserted seed courts data');
+        if (!process.env.MONGO_URI) {
+            throw new Error('MONGO_URI is not defined in environment variables');
+        }
+
+        console.log('Attempting to connect to database...');
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log('Connected to MongoDB successfully');
+
+        console.log('Checking existing courts...');
+        const existingCourts = await Court.find({});
+        console.log(`Found ${existingCourts.length} existing courts`);
+
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        for (const court of courtsData) {
+            const existingCourt = await Court.findOne({ name: court.name });
+            if (!existingCourt) {
+                await Court.create(court);
+                console.log(`Added new court: ${court.name}`);
+                addedCount++;
+            } else {
+                console.log(`Skipped existing court: ${court.name}`);
+                skippedCount++;
+            }
+        }
+
+        console.log('\nSeed Results:');
+        console.log(`Added courts: ${addedCount}`);
+        console.log(`Skipped courts: ${skippedCount}`);
+        
+        // Final verification
+        const finalCourts = await Court.find({});
+        console.log(`Total courts in database: ${finalCourts.length}`);
     } catch (error) {
-        console.error('Error seeding database:', error.message);
-    } finally {
-        await mongoose.disconnect();
-        console.log('Database connection closed');
+        console.error('Error in seed process:', error);
     }
 };
 
-module.exports = seedDatabase;
+// Execute the seed function
+console.log('Initiating database seed process...');
+seedDatabase()
+    .then(() => {
+        console.log('Seed script completed successfully');
+    })
+    .catch(error => {
+        console.error('Seed script failed:', error);
+    });

@@ -19,8 +19,19 @@
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "jest": "^29.2.0",
+    "babel-jest": "^29.2.0",
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.21.0",
+    "@babel/preset-react": "^7.21.0"
+  },
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest --clearCache && jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
   }
 }

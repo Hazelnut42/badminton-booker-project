@@ -7,7 +7,7 @@ import config from '../config';
 
 const apiUrl = config.apiUrl;
 
-const Profile = ({ user }) => {
+const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -15,12 +15,21 @@ const Profile = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [editedData, setEditedData] = useState({
     displayName: '',
-    bio: ''
+    bio: '',
   });
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // 如果未登录，跳转到登录页面
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    // 如果已登录，加载用户数据和预订历史
     Promise.all([fetchUserData(), fetchBookingHistory()])
       .finally(() => setIsLoading(false));
   }, []);
@@ -28,14 +37,10 @@ const Profile = ({ user }) => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) {
-        navigate('/login');
-        return;
-      }
 
       const response = await fetch(`${apiUrl}/auth/profile`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -47,7 +52,7 @@ const Profile = ({ user }) => {
       setUserData(data);
       setEditedData({
         displayName: data.displayName || data.username,
-        bio: data.bio || ''
+        bio: data.bio || '',
       });
     } catch (err) {
       setError('Failed to load profile');
@@ -59,15 +64,17 @@ const Profile = ({ user }) => {
     try {
       const userId = localStorage.getItem('user_id');
       const response = await axios.get(`${apiUrl}/bookings/history/${userId}`);
-      
+
       if (response.data && Array.isArray(response.data)) {
         const now = moment();
-        const upcoming = response.data.filter(booking => {
+        const upcoming = response.data.filter((booking) => {
           const bookingDate = moment(booking.timeSlot);
           return bookingDate.isAfter(now) && booking.status !== 'cancelled';
         });
-        
-        setUpcomingBookings(upcoming.sort((a, b) => moment(a.timeSlot) - moment(b.timeSlot)));
+
+        setUpcomingBookings(
+          upcoming.sort((a, b) => moment(a.timeSlot) - moment(b.timeSlot))
+        );
       }
     } catch (err) {
       console.error('Error fetching bookings:', err);
@@ -78,12 +85,9 @@ const Profile = ({ user }) => {
   const handleCancelBooking = async (bookingId) => {
     try {
       await axios.delete(`${apiUrl}/bookings/${bookingId}`);
-      
-      // 直接从 upcomingBookings 中移除已取消的预订
-      setUpcomingBookings(prevBookings => 
-        prevBookings.filter(booking => booking._id !== bookingId)
+      setUpcomingBookings((prevBookings) =>
+        prevBookings.filter((booking) => booking._id !== bookingId)
       );
-      
       alert('Booking cancelled successfully');
     } catch (err) {
       console.error('Error cancelling booking:', err);
@@ -100,16 +104,16 @@ const Profile = ({ user }) => {
         return;
       }
 
-      const response = await fetch('${apiUrl}/auth/profile/update', {
+      const response = await fetch(`${apiUrl}/auth/profile/update`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           displayName: editedData.displayName.trim(),
-          bio: editedData.bio.trim()
-        })
+          bio: editedData.bio.trim(),
+        }),
       });
 
       if (!response.ok) {
@@ -162,7 +166,8 @@ const Profile = ({ user }) => {
           <div className="profile-info">
             <div className="avatar-container">
               <div className="avatar-circle">
-                {(userData?.displayName?.charAt(0) || userData?.username?.charAt(0))?.toUpperCase()}
+                {(userData?.displayName?.charAt(0) ||
+                  userData?.username?.charAt(0))?.toUpperCase()}
               </div>
             </div>
             <div className="user-details">
@@ -203,7 +208,9 @@ const Profile = ({ user }) => {
                     <input
                       type="text"
                       value={editedData.displayName}
-                      onChange={(e) => setEditedData({...editedData, displayName: e.target.value})}
+                      onChange={(e) =>
+                        setEditedData({ ...editedData, displayName: e.target.value })
+                      }
                       className="edit-input"
                       placeholder="Enter display name"
                       maxLength={30}
@@ -213,13 +220,17 @@ const Profile = ({ user }) => {
                     <label>Bio:</label>
                     <textarea
                       value={editedData.bio}
-                      onChange={(e) => setEditedData({...editedData, bio: e.target.value})}
+                      onChange={(e) =>
+                        setEditedData({ ...editedData, bio: e.target.value })
+                      }
                       className="edit-input bio-input"
                       placeholder="Tell us about yourself..."
                       maxLength={500}
                       rows={3}
                     />
-                    <span className="field-hint">{500 - (editedData.bio?.length || 0)} characters remaining</span>
+                    <span className="field-hint">
+                      {500 - (editedData.bio?.length || 0)} characters remaining
+                    </span>
                   </div>
                 </div>
               )}
@@ -228,7 +239,10 @@ const Profile = ({ user }) => {
           <div className="profile-actions">
             {isEditing ? (
               <>
-                <button className="cancel-button" onClick={() => setIsEditing(false)}>
+                <button
+                  className="cancel-button"
+                  onClick={() => setIsEditing(false)}
+                >
                   Cancel
                 </button>
                 <button className="save-button" onClick={handleSave}>
@@ -237,7 +251,10 @@ const Profile = ({ user }) => {
               </>
             ) : (
               <>
-                <button className="edit-button" onClick={() => setIsEditing(true)}>
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditing(true)}
+                >
                   Edit Profile
                 </button>
                 <button className="logout-button" onClick={handleLogout}>
@@ -268,9 +285,11 @@ const Profile = ({ user }) => {
                     <h3>{booking.courtId.name}</h3>
                     <p>Time: {formatTimeSlot(booking.timeSlot)}</p>
                     <p>Location: {booking.courtId.address}</p>
-                    <p>Status: <span className="status-tag">Confirmed</span></p>
+                    <p>
+                      Status: <span className="status-tag">Confirmed</span>
+                    </p>
                   </div>
-                  <button 
+                  <button
                     className="cancel-reservation"
                     onClick={() => handleCancelBooking(booking._id)}
                   >
