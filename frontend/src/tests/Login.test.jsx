@@ -30,7 +30,6 @@ describe('Login Component', () => {
       </BrowserRouter>
     );
     
-    // 使用更具体的选择器
     expect(screen.getByRole('heading', { name: 'Log In' })).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Enter your username')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Enter your password')).toBeInTheDocument();

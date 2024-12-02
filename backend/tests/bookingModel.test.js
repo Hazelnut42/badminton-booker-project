@@ -18,7 +18,7 @@ describe('Booking Model', () => {
       }
 
       await mongoose.connect(process.env.MONGO_URI);
-      
+
       // Clear existing test data
       await User.deleteMany({ username: 'testbookinguser' });
       await Court.deleteMany({ name: 'Test Booking Court' });
@@ -97,7 +97,7 @@ describe('Booking Model', () => {
 
   it('should fail without required fields', async () => {
     const invalidBooking = new Booking({});
-    
+
     let error;
     try {
       await invalidBooking.save();
@@ -207,10 +207,9 @@ describe('Booking Model', () => {
     const bookingDate = new Date('2024-12-01');
     const timeSlot = new Date('2024-12-01T10:00:00.000Z');
 
-    // 验证测试数据存在
     const existingUser = await User.findById(testUser._id);
     const existingCourt = await Court.findById(testCourt._id);
-    
+
     expect(existingUser).toBeDefined();
     expect(existingCourt).toBeDefined();
 
@@ -226,7 +225,6 @@ describe('Booking Model', () => {
       .populate('courtId')
       .lean();
 
-    // 添加空值检查
     expect(populatedBooking).toBeDefined();
     expect(populatedBooking.userId).toBeDefined();
     expect(populatedBooking.courtId).toBeDefined();

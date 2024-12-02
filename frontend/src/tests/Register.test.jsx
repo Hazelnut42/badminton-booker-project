@@ -60,7 +60,6 @@ describe('Register Component', () => {
       </BrowserRouter>
     );
 
-    // 填写不匹配的密码
     fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
       target: { value: 'test@test.com' }
     });
