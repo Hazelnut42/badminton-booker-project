@@ -23,13 +23,11 @@ const Profile = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    // 如果未登录，跳转到登录页面
     if (!token) {
       navigate('/login');
       return;
     }
 
-    // 如果已登录，加载用户数据和预订历史
     Promise.all([fetchUserData(), fetchBookingHistory()])
       .finally(() => setIsLoading(false));
   }, []);
