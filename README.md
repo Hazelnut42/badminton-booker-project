@@ -13,21 +13,39 @@ badmintonbooker/
 │   │   ├── courtsRoutes.js  # Courts-related routes
 │   │   ├── bookRoutes.js  # Booking-related routes
 │   │   └── authRoutes.js  # Authentication-related routes
+│   ├── tests/      # tests file
+│   │   ├── bookingModel.test.js  # Test for bookingModel 
+│   │   ├── bookRoutes.test.js  # Test for bookRoutes
+│   │   ├── courtModel.test.js  # Test for courtModel
+│   │   ├── courtsRoutes.test.js  # Test for courtsRoutes
+│   │   ├── db.test.js  # Test for db
+│   │   └── userModel.test.js  # Test for userModel
+│   ├── connectDB.js      # Connect MongDB 
+│   ├── package.json      # Project dependencies configuration
+│   ├── package-lock.json      # Project dependencies configuration
+│   ├── seed.js      # Seed for project
 │   └── server.js    # Main server file
 │
 ├── frontend/          # Frontend code
+│   ├── Build/ # Frontend build results
 │   ├── node_modules/ # Dependencies
 │   ├── public/      # Static assets
 │   ├── src/         # Source code
 │   │   ├── components/ # React components
 │   │   ├── pages/   # Page components
 │   │   ├── styles/  # CSS styles
+│   │   ├── tests/  # tests file for frontend
 │   │   ├── App.js
 │   │   └── index.js
+│   ├── babel.config.js      # config for project
+│   ├── jest.config.js      # config for project
+│   ├── package-lock.json      # Project dependencies configuration
 │   └── package.json # Project dependencies configuration
 │
 ├── .env.example      # Environment variables example file
 ├── .gitignore       # Git ignore file
+├── .package.json      # Project dependencies configuration
+├── .Procfile      # Defines how Heroku starts app
 └── README.md        # Project documentation
 ```
 
