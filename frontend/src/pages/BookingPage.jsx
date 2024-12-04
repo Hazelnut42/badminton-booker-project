@@ -8,21 +8,26 @@ import config from '../config';
 const apiUrl = config.apiUrl;
 
 function BookingPage() {
-    const { courtId } = useParams(); // courtId will be a dynamic parameter in the URL
-    console.log(courtId); // Log courtId to ensure it's correct
-    const [slots, setSlots] = useState([]);
-    const [date, setDate] = useState('');
-    const [dates, setDates] = useState([]);
-    // const [isLoading, setIsLoading] = useState(false);
-    const [userId, setUserId] = useState(null);
-    const [selectedSlot, setSelectedSlot] = useState(null);
-    const navigate = useNavigate();
+    // Retrieve courtId from URL parameters
+    const { courtId } = useParams(); 
+    console.log(courtId);
 
+    // Define state variables
+    const [slots, setSlots] = useState([]); // Stores available slots for booking
+    const [date, setDate] = useState(''); // Currently selected date
+    const [dates, setDates] = useState([]); // Stores the upcoming 7 dates
+    const [userId, setUserId] = useState(null); // Stores user ID from localStorage
+    const [selectedSlot, setSelectedSlot] = useState(null); // Stores the user's selected slot
+    const navigate = useNavigate(); // Used for navigation after booking
+
+    // Fetch initial data and setup states
     useEffect(() => {
+        // Retrieve user ID from localStorage
         const id = localStorage.getItem('user_id');
         setUserId(id);
+
+        // Set the current date and calculate the next 7 days
         const today = new Date();
-        
         const formattedDate = moment(today).format('YYYY-MM-DD');
         setDate(formattedDate);
 
@@ -35,45 +40,33 @@ function BookingPage() {
         setDates(upcomingDates);
         console.log(upcomingDates);
 
+        // Fetch availability data for the current date
         async function fetchAvailability() {
-        
-        
             const res = await axios.get(`${apiUrl}/bookings/availability`, { params: { courtId, date } });
-            setSlots(res.data.availableSlots);
+            setSlots(res.data.availableSlots); // Update slots with the fetched data
             }
         fetchAvailability();
-    }, [courtId, date]);
+    }, [courtId, date]); // Re-run effect when courtId or date changes
 
-    // useEffect(() => {
-    // }, [courtId, date]);
-
-    // const groupedSlots = slots.reduce((acc, slot) => {
-    //     const slotDate = slot.date;
-    //     if (!acc[slotDate]) {
-    //         acc[slotDate] = [];
-    //     }
-    //     acc[slotDate].push(slot);
-    //     return acc;
-    // }, {});
-
+    // Handles booking action when user selects a slot and clicks "Book Now"
     const handleBooking = async () => {
-        if (!selectedSlot) return alert('Please select a time slot');  // Prompt the user if no time slot is selected
-        if (!userId) return alert('User not logged in');
-        // const { date, time, isAvailable } = selectedSlot;
+        if (!selectedSlot) return alert('Please select a time slot');  // Ensure a slot is selected
+        if (!userId) return alert('User not logged in'); // Ensure the user is logged in
+
         const { isAvailable } = selectedSlot;
         if (!isAvailable) {
-            return alert('This time slot is already booked');
+            return alert('This time slot is already booked'); // Prevent booking unavailable slots
         }
-        // const timeSlot = new Date(date); 
+
         try {
-            
+            // Make a booking request to the server
             const response = await axios.post(`${apiUrl}/bookings/book`, {
                 userId,
                 courtId,
                 date: selectedSlot.date,
                 timeSlot: `${selectedSlot.time}:00-${selectedSlot.time + 1}:00`,
             });
-
+            // Update the UI to reflect the newly booked slot
             setSlots((prevSlots) =>
                 prevSlots.map((s) =>
                     s.date === selectedSlot.date && s.time === selectedSlot.time
@@ -81,15 +74,18 @@ function BookingPage() {
                         : s
                 )
             );
+            // Navigate to a confirmation page with booking details
             navigate('/confirmation', { state: { booking: response.data.booking } });
         } catch (error) {
-            alert('Booking failed');
+            alert('Booking failed'); // Show an error message if the booking fails
         }
     };
 
     return (
         <div className="booking-page-container">
+            {/* Page title */}
             <h2>Book a Slot</h2>
+            {/* Display the current date in a disabled input field */}
             <label style={{
                                     paddingLeft: '20px',
                                     paddingRight: '20px',
@@ -102,12 +98,12 @@ function BookingPage() {
             />
             <div style={{ height: '20px' }}></div>
 
-            {/* Display slots in a table */}
+            {/* Table for displaying available slots */}
             <table className="slots-table">
                 <thead>
                     <tr>
+                        {/* Header row with dates and time slots */}
                         <th>Date</th>
-                        {/* Show time slots for each hour */}
                         {[8, 9, 10, 11, 12, 13, 14, 15, 16].map((hour) => (
                             <th key={hour}>{`${hour}:00-${hour + 1}:00`}</th>
                         ))}
@@ -116,6 +112,7 @@ function BookingPage() {
                 <tbody>
                     {dates.map((day) => (
                         <tr key={day}>
+                            {/* Display the date in the first column of each row */}
                             <td style={{
                                     paddingLeft: '20px',
                                     paddingRight: '20px',
@@ -125,6 +122,7 @@ function BookingPage() {
                                 const slot = slots.find(slot => slot.date === day && slot.time === hour);
                                     return (
                                         <td key={hour}>
+                                        {/* Check if the slot is available, not available, or loading */}
                                         {slot ? (
                                             slot.isAvailable ? (
                                                 <button
@@ -133,16 +131,17 @@ function BookingPage() {
                                                         color: 'white',
                                                         cursor: 'pointer',
                                                     }}
-                                                    onClick={() => setSelectedSlot(slot)}
+                                                    onClick={() => setSelectedSlot(slot)} // Update selected slot on click
                                                 >
+                                                    {/* Button text changes if the slot is selected */}
                                                     {selectedSlot && selectedSlot.time === hour && selectedSlot.date === day ? 'Selected' : 'Available'}
                                                 </button>
                                             ) : (
                                                 <button
                                                     style={{
-                                                        backgroundColor: 'gray',
+                                                        backgroundColor: 'gray', // Gray for unavailable slots
                                                         color: 'white',
-                                                        cursor: 'not-allowed',
+                                                        cursor: 'not-allowed', // Disable pointer interaction
                                                     }}
                                                     disabled
                                                 >
@@ -150,7 +149,7 @@ function BookingPage() {
                                                 </button>
                                             )
                                         ) : (
-                                            'Loading...'
+                                            'Loading...' // Display while the slot data is loading
                                         )}
                                     </td>
                                     );
@@ -159,8 +158,9 @@ function BookingPage() {
                     ))}
                 </tbody>
             </table>
+            {/* Button to confirm the booking */}
             <button 
-                onClick={handleBooking}
+                onClick={handleBooking} // Trigger the booking handler
                 style={{
                     marginTop: '20px',
                     backgroundColor: 'black',
@@ -171,8 +171,6 @@ function BookingPage() {
             >
                 Book Now
             </button>
-            {/* loading */}
-            {/* {isLoading && <p>Loading...</p>} */}
         </div>
     );
 }
