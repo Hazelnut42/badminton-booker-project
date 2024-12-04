@@ -1,9 +1,11 @@
+/* Container styling for the booking page */
 .booking-page-container {
     padding-left: 20px;
     margin-left: 20px;
     padding: 20px;
 }
 
+/* Table styling for displaying the available slots */
 table.slots-table {
     width: 100%;
     border-collapse: collapse;
@@ -12,16 +14,19 @@ table.slots-table {
     text-align: center;
 }
 
+/* Styling for table cells and headers */
 table.slots-table th, table.slots-table td {
     border: 1px solid #ddd;
     padding: 10px;
 }
 
+/* Header cell-specific styling */
 table.slots-table th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
 
+/* Default styling for all buttons */
 button {
     padding: 8px 12px;
     background-color: black;
@@ -31,17 +36,20 @@ button {
     cursor: pointer;
 }
 
+/* Styling for disabled buttons */
 button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
+/* Styling for hover effects on active (non-disabled) buttons */
 button:hover:not(:disabled) {
     background-color: black;
     opacity: 0.8;
 }
 
+/* Responsive design: Adjusts the table for smaller screens */
 @media (max-width: 768px) {
     table.slots-table {
       display: block;
